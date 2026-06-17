@@ -27,7 +27,7 @@ export const metadata: Metadata = {
         type: "website",
         images: [
             {
-                url: "/flux_banner.png",
+                url: "/onreco_banner.jpg",
                 width: 1200,
                 height: 630,
                 alt: "Onreco Waitlist - Stablecoin Accounting, Automated",
@@ -39,7 +39,7 @@ export const metadata: Metadata = {
         title: "Join the Onreco Waitlist - Stablecoin Accounting, Automated",
         description:
             "Stop entering stablecoin transactions by hand. Join the Onreco waitlist for automated bookkeeping and QuickBooks or Xero sync.",
-        images: ["/flux_banner.png"],
+        images: ["/onreco_banner.jpg"],
     },
 };
 

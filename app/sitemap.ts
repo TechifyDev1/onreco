@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 import { blogPosts } from "./blog/_data/posts";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://fluxhq.vercel.app";
+  const baseUrl = `https://${process.env.VERCEL_URL}`;
   
   const staticRoutes: MetadataRoute.Sitemap = [
     {

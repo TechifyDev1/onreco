@@ -1,8 +1,8 @@
+import Footer from "@/components/landing-page/Footer";
+import NavBar from "@/components/landing-page/nav-bar/NavBar";
+import { ArrowRight, Clock } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, Clock } from "lucide-react";
-import NavBar from "@/components/landing-page/nav-bar/NavBar";
-import Footer from "@/components/landing-page/Footer";
 import { blogPosts } from "./_data/posts";
 
 export const metadata: Metadata = {
@@ -26,11 +26,11 @@ export const metadata: Metadata = {
         description:
             "Guides and insights on stablecoin accounting, USDT/USDC bookkeeping, and QuickBooks / Xero automation.",
         type: "website",
-        url: "https://fluxhq.vercel.app/blog",
+        url: `https://${process.env.VERCEL_URL}/blog`,
         siteName: "Onreco",
         images: [
             {
-                url: "/main_blog_page_image.jpg",
+                url: "/onreco_main_blog_banner.jpg",
                 width: 1200,
                 height: 630,
                 alt: "Onreco Blog - Stablecoin accounting, explained.",
@@ -43,7 +43,7 @@ export const metadata: Metadata = {
         title: "Blog | Onreco",
         description:
             "Guides and insights on stablecoin accounting, USDT/USDC bookkeeping, and QuickBooks / Xero automation.",
-        images: ["/main_blog_page_image.jpg"],
+        images: ["/onreco_main_blog_banner.jpg"],
     },
 };
 

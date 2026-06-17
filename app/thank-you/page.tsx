@@ -8,13 +8,40 @@ export const metadata: Metadata = {
     title: "Thank You | Onreco",
     description:
         "Thanks for joining the Onreco waitlist. We'll be in touch when stablecoin accounting automation is ready for your team.",
+    alternates: {
+        canonical: "/thank-you",
+    },
+    openGraph: {
+        title: "You're on the Onreco waitlist",
+        description:
+            "Thanks for joining the Onreco waitlist. We'll be in touch when stablecoin accounting automation is ready for your team.",
+        type: "website",
+        url: `https://${process.env.VERCEL_URL}/thank-you`,
+        siteName: "Onreco",
+        images: [
+            {
+                url: "/onreco_banner.jpg",
+                width: 1200,
+                height: 630,
+                alt: "Onreco - Stablecoin Accounting, Automated",
+            },
+        ],
+        locale: "en_US",
+    },
+    twitter: {
+        card: "summary_large_image",
+        title: "You're on the Onreco waitlist",
+        description:
+            "Thanks for joining the Onreco waitlist. We'll be in touch when stablecoin accounting automation is ready for your team.",
+        images: ["/onreco_banner.jpg"],
+    },
 };
 
 export default function ThankYouPage() {
+    const siteUrl = `https://${process.env.VERCEL_URL}`;
     const shareHref =
         "mailto:?subject=Join%20me%20on%20the%20Onreco%20waitlist&body=I%20just%20joined%20the%20Onreco%20waitlist%20for%20stablecoin%20accounting.%20Thought%20you%20would%20want%20to%20join%20too.";
-    const twitterHref =
-        "https://twitter.com/intent/tweet?text=Just%20joined%20the%20%40onrecohq%20waitlist%20%E2%80%94%20automated%20stablecoin%20accounting%20for%20QuickBooks%20and%20Xero.%20Worth%20checking%20out%20if%20your%20team%20pays%20in%20USDT%20or%20USDC.%20https%3A%2F%2Ffluxhq.io";
+    const twitterHref = `https://twitter.com/intent/tweet?text=Just%20joined%20the%20%40onrecohq%20waitlist%20%E2%80%94%20automated%20stablecoin%20accounting%20for%20QuickBooks%20and%20Xero.%20Worth%20checking%20out%20if%20your%20team%20pays%20in%20USDT%20or%20USDC.%20${encodeURIComponent(siteUrl)}`;
 
     return (
         <div className="min-h-screen flex flex-col bg-background text-on-surface">
@@ -57,7 +84,7 @@ export default function ThankYouPage() {
                 {/* Two-card CTA grid */}
                 <div className="relative z-10 mt-12 grid w-full max-w-3xl gap-5 md:grid-cols-2">
                     <a
-                        className="bg-glass rounded-xl p-6 flex min-h-[210px] flex-col border border-outline-variant/20 transition-all duration-300 hover:border-primary/40 hover:bg-surface-container-high"
+                        className="bg-glass rounded-xl p-6 flex min-h-52.5 flex-col border border-outline-variant/20 transition-all duration-300 hover:border-primary/40 hover:bg-surface-container-high"
                         href={twitterHref}
                         rel="noreferrer"
                         target="_blank"
@@ -82,7 +109,7 @@ export default function ThankYouPage() {
                     </a>
 
                     <a
-                        className="bg-glass rounded-xl p-6 flex min-h-[210px] flex-col border border-outline-variant/20 transition-all duration-300 hover:border-primary/40 hover:bg-surface-container-high"
+                        className="bg-glass rounded-xl p-6 flex min-h-52.5 flex-col border border-outline-variant/20 transition-all duration-300 hover:border-primary/40 hover:bg-surface-container-high"
                         href={shareHref}
                         aria-label="Invite your team to join the Onreco waitlist via email"
                     >

@@ -40,7 +40,7 @@ export async function generateMetadata(
             title: post.title,
             description: post.description,
             type: "article",
-            url: `https://fluxhq.vercel.app/blog/${post.slug}`,
+            url: `https://${process.env.VERCEL_URL}/blog/${post.slug}`,
             siteName: "Onreco",
             publishedTime: post.publishedTime,
             modifiedTime: post.modifiedTime ?? post.publishedTime,
@@ -81,14 +81,14 @@ function ArticleJsonLd({ post }: { post: ReturnType<typeof getPost> }) {
             name: "Onreco",
             logo: {
                 "@type": "ImageObject",
-                url: "https://fluxhq.vercel.app/favicon.ico",
+                url: `https://${process.env.VERCEL_URL}/favicon.ico`,
             },
         },
         mainEntityOfPage: {
             "@type": "WebPage",
-            "@id": `https://fluxhq.vercel.app/blog/${post.slug}`,
+            "@id": `https://${process.env.VERCEL_URL}/blog/${post.slug}`,
         },
-        image: `https://fluxhq.vercel.app${post.image || "/blog_banner_image_1.jpg"}`,
+        image: `https://${process.env.VERCEL_URL}${post.image || "/blog_banner_image_1.jpg"}`,
     };
     return (
         <script

@@ -17,7 +17,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://fluxhq.vercel.app"),
+  metadataBase: new URL(`https://${process.env.VERCEL_URL}`),
   title: "Stablecoin Accounting for QuickBooks & Xero | Onreco",
   description:
     "Automate stablecoin accounting with Onreco. Detect USDT and USDC transactions, reconcile payments, categorize activity, and sync directly to QuickBooks and Xero.",
@@ -119,11 +119,11 @@ export const metadata: Metadata = {
     description:
       "Connect your wallet. Onreco detects USDT and USDC transactions on Tron, Solana, and Base, then syncs them directly to QuickBooks or Xero.",
     type: "website",
-    url: "https://fluxhq.vercel.app",
+    url: `https://${process.env.VERCEL_URL}`,
     siteName: "Onreco",
     images: [
       {
-        url: "/flux_banner.png",
+        url: "/onreco_banner.jpg",
         width: 1200,
         height: 630,
         alt: "Onreco - Stablecoin Accounting, Automated",
@@ -136,7 +136,7 @@ export const metadata: Metadata = {
     title: "Onreco | Stablecoin Accounting, Automated",
     description:
       "Stop entering stablecoin transactions by hand. Onreco automates bookkeeping, reconciliation, and QuickBooks/Xero sync for USDT and USDC.",
-    images: ["/flux_banner.png"],
+    images: ["/onreco_banner.jpg"],
   },
   verification: {
     google: "jjegQ2Hi3U5KA2rTXyOj3vbCCzWUGW-cTwBSKUaWz3c",

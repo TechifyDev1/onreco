@@ -18,7 +18,7 @@ export default function Home() {
     "description": "Connect your wallet once. Onreco auto-detects, categorizes, and syncs USDT and USDC transactions into QuickBooks and Xero automatically.",
     "applicationCategory": "BusinessApplication, FinanceApplication",
     "operatingSystem": "All",
-    "url": "https://fluxhq.vercel.app",
+    "url": `https://${process.env.VERCEL_URL}`,
     "offers": {
       "@type": "Offer",
       "price": "0",
