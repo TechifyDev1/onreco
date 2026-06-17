@@ -26,7 +26,7 @@ export const metadata: Metadata = {
         description:
             "Guides and insights on stablecoin accounting, USDT/USDC bookkeeping, and QuickBooks / Xero automation.",
         type: "website",
-        url: `https://${process.env.VERCEL_URL}/blog`,
+        url: `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL ?? "localhost:3000"}/blog`,
         siteName: "Onreco",
         images: [
             {

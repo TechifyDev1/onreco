@@ -16,7 +16,7 @@ export const metadata: Metadata = {
         description:
             "Thanks for joining the Onreco waitlist. We'll be in touch when stablecoin accounting automation is ready for your team.",
         type: "website",
-        url: `https://${process.env.VERCEL_URL}/thank-you`,
+        url: `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL ?? "localhost:3000"}/thank-you`,
         siteName: "Onreco",
         images: [
             {
@@ -38,7 +38,7 @@ export const metadata: Metadata = {
 };
 
 export default function ThankYouPage() {
-    const siteUrl = `https://${process.env.VERCEL_URL}`;
+    const siteUrl = `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL ?? "localhost:3000"}`;
     const shareHref =
         "mailto:?subject=Join%20me%20on%20the%20Onreco%20waitlist&body=I%20just%20joined%20the%20Onreco%20waitlist%20for%20stablecoin%20accounting.%20Thought%20you%20would%20want%20to%20join%20too.";
     const twitterHref = `https://twitter.com/intent/tweet?text=Just%20joined%20the%20%40onrecohq%20waitlist%20%E2%80%94%20automated%20stablecoin%20accounting%20for%20QuickBooks%20and%20Xero.%20Worth%20checking%20out%20if%20your%20team%20pays%20in%20USDT%20or%20USDC.%20${encodeURIComponent(siteUrl)}`;
