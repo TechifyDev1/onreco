@@ -1,25 +1,25 @@
-'use client'
-import { UserProfileState } from '@/services/UserService'
-import { useEffect } from 'react'
-import { create } from 'zustand'
+'use client';
+import { UserProfileState } from '@/services/UserService';
+import { useEffect } from 'react';
+import { create } from 'zustand';
 
 interface UserProfileStoreState {
-  setUserProfile: (userProfile: UserProfileState) => void
-  userProfile: UserProfileState | null
+  setUserProfile: (userProfile: UserProfileState) => void;
+  userProfile: UserProfileState | null;
 }
 
 export const useUserProfileStore = create<UserProfileStoreState>((set) => {
   return {
     setUserProfile: (userProfile) => {
-      set({ userProfile })
+      set({ userProfile });
     },
     userProfile: null,
-  }
-})
+  };
+});
 
 export function useHydratedUserProfileStore(profile: UserProfileState) {
-  const { setUserProfile, userProfile } = useUserProfileStore()
+  const { setUserProfile } = useUserProfileStore();
   useEffect(() => {
-    setUserProfile(profile)
-  }, [profile, setUserProfile])
+    setUserProfile(profile);
+  }, [profile, setUserProfile]);
 }

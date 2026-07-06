@@ -1,21 +1,30 @@
-import MobileBottomBar from '@/components/dashboard/MobileBottomBar'
-import Sidebar from '@/components/dashboard/Sidebar'
-import Topbar from '@/components/dashboard/Topbar'
-import UserStoreInitializer from '@/providers/UserStoreInitializer'
-import { ApiError } from '@/services/ApiError'
-import UserService, { UserProfileState } from '@/services/UserService'
-import { redirect } from 'next/navigation'
-import { ReactNode } from 'react'
+import MobileBottomBar from '@/components/dashboard/MobileBottomBar';
+import Sidebar from '@/components/dashboard/Sidebar';
+import Topbar from '@/components/dashboard/Topbar';
+import UserStoreInitializer from '@/providers/UserStoreInitializer';
+import { ApiError } from '@/services/ApiError';
+import UserService, { UserProfileState } from '@/services/UserService';
+import { redirect } from 'next/navigation';
+import { ReactNode } from 'react';
+import { Integration } from './_data/integrations';
+import IntegrationService from '@/services/IntegrationService';
+import IntegrationStoreInitializer from '@/providers/IntegrationStoreInitializer';
 
 export default async function AppLayout({ children }: { children: ReactNode }) {
-  const result = await getUserProfileInTheServer()
-  if (!result.ok || !('userProfile' in result)) {
-    redirect('/login')
+  const userProfileResult = await getUserProfileInTheServer();
+  if (!userProfileResult.ok || !('userProfile' in userProfileResult)) {
+    redirect('/login');
   }
-  const userProfile = result.userProfile
+  const userProfile = userProfileResult.userProfile;
+  const integrationsResult = await getIntegrationsInTheServer();
   return (
     <div className="min-h-screen bg-background text-on-surface">
       <UserStoreInitializer userProfile={userProfile} />
+      <IntegrationStoreInitializer
+        integrations={
+          integrationsResult.ok ? integrationsResult.integrations : []
+        }
+      />
       <Sidebar />
       <div className="lg:pl-64 flex flex-col min-h-screen">
         <Topbar />
@@ -26,34 +35,60 @@ export default async function AppLayout({ children }: { children: ReactNode }) {
       </div>
       <MobileBottomBar />
     </div>
-  )
+  );
 }
 
 async function getUserProfileInTheServer(): Promise<GetUserProfileState> {
   try {
-    const res = await UserService.getUserProfile()
+    const res = await UserService.getUserProfile();
     return {
       ok: true,
       userProfile: res,
-    }
+    };
   } catch (error) {
-    console.error(`[Server Layout] Failed to fetch user profile:`, error)
+    console.error(`[Server Layout] Failed to fetch user profile:`, error);
     if (error instanceof ApiError) {
       return {
         ok: false,
         message: error.message,
-      }
+      };
     }
     return {
       ok: false,
       message: 'An unexpected error occoured',
-    }
+    };
   }
 }
 
+async function getIntegrationsInTheServer(): Promise<GetIntegrationState> {
+  try {
+    const res = await IntegrationService.getSupportedIntegrations();
+    console.log(`[Server Layout] Integrations gotten`, res);
+    return {
+      ok: true,
+      integrations: res,
+    };
+  } catch (error) {
+    console.error(`[Server Layout] Failed to Integrations:`, error);
+    if (error instanceof ApiError) {
+      return {
+        ok: false,
+        message: error.message,
+      };
+    }
+    return {
+      ok: false,
+      message: 'An unexpected error occured',
+    };
+  }
+}
 export type GetUserProfileState =
   | {
-      ok: boolean
-      userProfile: UserProfileState
+      ok: true;
+      userProfile: UserProfileState;
     }
-  | { ok: boolean; message: string }
+  | { ok: false; message: string };
+
+export type GetIntegrationState =
+  | { ok: true; integrations: Integration[] }
+  | { ok: false; message: string };
