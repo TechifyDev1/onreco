@@ -1,70 +1,70 @@
-export type Integration = {
-  name: string;
-  slug: string;
-  available: boolean;
-  connected: boolean;
-  connectedAt?: string | null;
-  picUrl: string;
-  blurb: string;
-};
+export interface Integration {
+    slug: string;
+    name: string;
+    picUrl?: string;
+    blurb: string;
+    available: boolean;
+    connected: boolean;
+    connectedAt?: string;
+}
 
 export const INTEGRATIONS: Integration[] = [
-  {
-    name: "QuickBooks Online",
-    slug: "quickbooks",
-    available: true,
-    connected: true,
-    connectedAt: "2026-07-05T15:07:38Z",
-    picUrl: "https://res.cloudinary.com/dvpkp0u9u/image/upload/v1783261709/quickbooks-seeklogo_xstkqg.png",
-    blurb: "Sync categorized stablecoin transactions into your Chart of Accounts automatically.",
-  },
-  {
-    name: "Xero",
-    slug: "xero",
-    available: true,
-    connected: true,
-    connectedAt: "2026-07-04T15:07:38Z",
-    picUrl: "https://res.cloudinary.com/dvpkp0u9u/image/upload/v1783261709/quickbooks-seeklogo_xstkqg.png",
-    blurb: "Push journal entries and reconciliation data into your Xero organization.",
-  },
-  {
-    name: "NetSuite",
-    slug: "netsuite",
-    available: true,
-    connected: false,
-    picUrl: "https://res.cloudinary.com/dvpkp0u9u/image/upload/v1783261709/quickbooks-seeklogo_xstkqg.png",
-    blurb: "Connect your NetSuite GL for high-volume stablecoin transaction sync.",
-  },
-  {
-    name: "FreshBooks",
-    slug: "freshbooks",
-    available: true,
-    connected: false,
-    picUrl: "https://res.cloudinary.com/dvpkp0u9u/image/upload/v1783261709/quickbooks-seeklogo_xstkqg.png",
-    blurb: "Sync expenses and income to FreshBooks for small-team accounting.",
-  },
-  {
-    name: "Zoho Books",
-    slug: "zoho",
-    available: true,
-    connected: false,
-    picUrl: "https://res.cloudinary.com/dvpkp0u9u/image/upload/v1783261709/quickbooks-seeklogo_xstkqg.png",
-    blurb: "Send categorized stablecoin entries to your Zoho Books ledger.",
-  },
-  {
-    name: "Stripe",
-    slug: "stripe",
-    available: false,
-    connected: false,
-    picUrl: "https://res.cloudinary.com/dvpkp0u9u/image/upload/v1783261709/quickbooks-seeklogo_xstkqg.png",
-    blurb: "Reconcile Stripe payouts against on-chain stablecoin payments.",
-  },
-  {
-    name: "Plaid",
-    slug: "plaid",
-    available: false,
-    connected: false,
-    picUrl: "https://res.cloudinary.com/dvpkp0u9u/image/upload/v1783261709/quickbooks-seeklogo_xstkqg.png",
-    blurb: "Link bank accounts to auto-match fiat off-ramp transfers with stablecoin activity.",
-  },
+    {
+        slug: "quickbooks",
+        name: "QuickBooks Online",
+        picUrl: "https://logo.clearbit.com/quickbooks.intuit.com",
+        blurb: "Sync categorized stablecoin transactions into your Chart of Accounts automatically.",
+        available: true,
+        connected: true,
+        connectedAt: new Date(Date.now() - 2 * 60 * 1000).toISOString(),
+    },
+    {
+        slug: "xero",
+        name: "Xero",
+        picUrl: "https://logo.clearbit.com/xero.com",
+        blurb: "Push journal entries and reconciliation data into your Xero organization.",
+        available: true,
+        connected: true,
+        connectedAt: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
+    },
+    {
+        slug: "netsuite",
+        name: "NetSuite",
+        picUrl: "https://logo.clearbit.com/netsuite.com",
+        blurb: "Connect your NetSuite GL for high-volume stablecoin transaction sync.",
+        available: true,
+        connected: false,
+    },
+    {
+        slug: "freshbooks",
+        name: "FreshBooks",
+        picUrl: "https://logo.clearbit.com/freshbooks.com",
+        blurb: "Sync expenses and income to FreshBooks for small-team accounting.",
+        available: true,
+        connected: false,
+    },
+    {
+        slug: "zoho-books",
+        name: "Zoho Books",
+        picUrl: "https://logo.clearbit.com/zoho.com",
+        blurb: "Send categorized stablecoin entries to your Zoho Books ledger.",
+        available: true,
+        connected: false,
+    },
+    {
+        slug: "stripe",
+        name: "Stripe",
+        picUrl: "https://logo.clearbit.com/stripe.com",
+        blurb: "Reconcile Stripe payouts against on-chain stablecoin payments.",
+        available: false,
+        connected: false,
+    },
+    {
+        slug: "plaid",
+        name: "Plaid",
+        picUrl: "https://logo.clearbit.com/plaid.com",
+        blurb: "Link bank accounts to auto-match fiat off-ramp transfers with stablecoin activity.",
+        available: false,
+        connected: false,
+    },
 ];

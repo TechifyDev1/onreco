@@ -1,15 +1,12 @@
-"use client";
+import { Bell, Search } from "lucide-react";
 
-import { Bell, ChevronDown, Search } from "lucide-react";
-import { useSimulationStore } from "@/providers/simulation-store";
+import AccountMenu from "./AccountMenu";
 
 export default function Topbar() {
-    const { isEmptySimulated, toggleEmptySimulation } = useSimulationStore();
-
     return (
         <header className="sticky top-0 z-30 h-16 border-b border-outline-variant/10 bg-surface-container-lowest/80 backdrop-blur-md">
             <div className="h-full px-4 md:px-8 flex items-center gap-6">
-                {/* Search — capped so the right cluster has room to breathe */}
+                {/* Search */}
                 <div className="flex-1 max-w-xl relative">
                     <Search
                         className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-on-surface-variant"
@@ -23,30 +20,10 @@ export default function Topbar() {
                     />
                 </div>
 
-                {/* Spacer keeps the right cluster clear of the search field on lg+ */}
+                {/* Spacer */}
                 <div className="hidden md:block md:ml-auto" />
 
-                <div className="flex items-center gap-3 md:gap-4">
-                    {/* Simulation Toggle */}
-                    <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-surface-container-low border border-outline-variant/10 text-xs text-on-surface-variant font-semibold tracking-wide">
-                        <span>SIMULATE EMPTY</span>
-                        <button
-                            type="button"
-                            role="switch"
-                            aria-checked={isEmptySimulated}
-                            onClick={toggleEmptySimulation}
-                            className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
-                                isEmptySimulated ? "bg-primary" : "bg-surface-container-high border border-outline-variant/25"
-                            }`}
-                        >
-                            <span
-                                className={`pointer-events-none inline-block h-4 w-4 transform rounded-full bg-on-primary shadow ring-0 transition duration-200 ease-in-out ${
-                                    isEmptySimulated ? "translate-x-4 bg-white" : "translate-x-0 bg-on-surface-variant/70"
-                                }`}
-                            />
-                        </button>
-                    </div>
-
+                <div className="flex items-center gap-2 md:gap-3">
                     {/* Notification bell */}
                     <button
                         type="button"
@@ -57,25 +34,9 @@ export default function Topbar() {
                         <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-secondary" />
                     </button>
 
-                    {/* User menu */}
-                    <button
-                        type="button"
-                        className="flex items-center gap-3 pl-2 pr-3 py-1.5 rounded-lg hover:bg-surface-container transition-colors"
-                    >
-                        <div className="w-7 h-7 rounded-full bg-primary-container/30 border border-primary-container/50 flex items-center justify-center text-primary text-xs font-semibold">
-                            JD
-                        </div>
-                        <span className="hidden md:inline text-sm text-on-surface font-medium">
-                            John Doe
-                        </span>
-                        <ChevronDown
-                            className="hidden md:block w-4 h-4 text-on-surface-variant"
-                            strokeWidth={1.75}
-                        />
-                    </button>
+                    <AccountMenu />
                 </div>
             </div>
         </header>
     );
 }
-
