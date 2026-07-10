@@ -1,4 +1,4 @@
-import type {
+import {
     ArrowRight,
     GitBranch,
     Repeat,
@@ -33,7 +33,6 @@ export type Rule = {
     status: "active" | "paused";
 };
 
-import { ArrowRight, GitBranch, Repeat, Wallet } from "lucide-react";
 
 export const RULES: Rule[] = [
     {

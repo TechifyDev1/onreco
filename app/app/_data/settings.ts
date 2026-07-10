@@ -1,4 +1,4 @@
-import type {
+import {
     Bell,
     Building2,
     CreditCard,
