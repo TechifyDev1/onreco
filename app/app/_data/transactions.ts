@@ -1,4 +1,4 @@
-export type TransactionType = 'RECIEVED' | 'SENT';
+export type TransactionType = 'RECEIVED' | 'SENT';
 export type Asset = 'USDT' | 'USDC';
 export type SyncStatus = 'SYNCED' | 'PENDING' | 'FAILED';
 

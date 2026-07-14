@@ -29,7 +29,7 @@ export default function TransactionBody() {
       );
    }
    return transactions.map((tx) => {
-      const isIn = tx.direction === 'RECIEVED';
+      const isIn = tx.direction === 'RECEIVED';
       return (
          <tr key={tx.id} className="border-t border-outline-variant/10 hover:bg-surface-container-low/50 transition-colors">
             <td className="px-5 py-4 text-xs text-on-surface-variant whitespace-nowrap">{tx.date}</td>
@@ -43,10 +43,10 @@ export default function TransactionBody() {
             <td className="px-5 py-4 font-mono text-on-surface text-right whitespace-nowrap">{tx.usd}</td>
             <td className="px-5 py-4 hidden md:table-cell text-on-surface-variant">{tx.wallet}</td>
             <td className="px-5 py-4 hidden lg:table-cell text-on-surface-variant">{tx.category}</td>
-            <td className="px-5 py-4 hidden xl:table-cell font-mono text-xs">
-               <a href="#" className="inline-flex items-center gap-1 text-on-surface-variant hover:text-primary transition-colors">
-                  {tx.counterparty}
-                  <ExternalLink className="w-3 h-3" strokeWidth={1.75} />
+            <td className="px-5 py-4 hidden xl:table-cell font-mono text-xs max-w-37.5">
+               <a href="#" className="inline-flex items-center gap-1 text-on-surface-variant hover:text-primary transition-colors w-full">
+                  <span className="truncate flex-1">{tx.counterparty}</span>
+                  <ExternalLink className="w-3 h-3 shrink-0" strokeWidth={1.75} />
                </a>
             </td>
             <td className="px-5 py-4">
