@@ -20,6 +20,14 @@ export default class ApiClient {
       return this.request<T>(path, { method: 'POST', body: JSON.stringify(body) });
    }
 
+   static async put<T, B>(path: string, body: B): Promise<{ data: T; headers: Headers }> {
+      return this.request<T>(path, { method: 'PUT', body: JSON.stringify(body) });
+   }
+
+   static async delete(path: string): Promise<{ data: null; headers: Headers }> {
+      return this.request<null>(path, { method: 'DELETE' });
+   }
+
    private static async request<T>(
       path: string,
       options: RequestInit

@@ -4,12 +4,16 @@ export default function Field({
   value,
   placeholder,
   suffix,
+  onChange,
+  disabled,
 }: {
   label: string
   hint?: string
   value?: string
   placeholder?: string
   suffix?: string
+  onChange?: (value: string) => void
+  disabled?: boolean
 }) {
   return (
     <div className="space-y-1.5">
@@ -19,9 +23,12 @@ export default function Field({
       <div className="flex rounded-lg bg-surface-container-low border border-outline-variant/20 focus-within:border-primary-container focus-within:ring-1 focus-within:ring-primary-container transition-all overflow-hidden">
         <input
           type="text"
-          defaultValue={value}
+          value={value ?? ''}
+          onChange={onChange ? (e) => onChange(e.target.value) : undefined}
           placeholder={placeholder}
-          className="flex-1 bg-transparent px-4 py-2.5 text-sm text-on-surface placeholder:text-on-surface-variant/50 outline-none"
+          disabled={disabled}
+          readOnly={!onChange}
+          className="flex-1 bg-transparent px-4 py-2.5 text-sm text-on-surface placeholder:text-on-surface-variant/50 outline-none disabled:opacity-50 read-only:cursor-default"
         />
         {suffix && (
           <span className="flex items-center px-3 text-xs font-mono text-on-surface-variant border-l border-outline-variant/20">

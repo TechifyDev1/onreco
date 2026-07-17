@@ -16,4 +16,12 @@ export default class UserService {
     )
     return userResponse.data
   }
+
+  static async updateProfile(data: { firstName: string; lastName: string }): Promise<UserProfileState> {
+    const response = await ApiClient.put<UserProfileState, { firstName: string; lastName: string }>(
+      `${this.userBasePath}/me`,
+      data
+    )
+    return response.data
+  }
 }

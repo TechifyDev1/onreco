@@ -6,6 +6,7 @@ import {
     Receipt,
     Settings,
     Sparkles,
+    Tags,
     Wallet2,
 } from "lucide-react";
 import type { ComponentType } from "react";
@@ -22,6 +23,7 @@ export type NavItem = {
 export const NAV_ITEMS: NavItem[] = [
     { href: "/app", label: "Overview", short: "Overview", icon: LayoutDashboard, exact: true },
     { href: "/app/transactions", label: "Transactions", short: "Activity", icon: Receipt },
+    { href: "/app/categorize", label: "Categorize", short: "Categorize", icon: Tags },
     { href: "/app/reconciliation", label: "Reconciliation", short: "Reconcile", icon: Link2 },
     { href: "/app/rules", label: "Rules", short: "Rules", icon: Sparkles },
     { href: "/app/wallets", label: "Wallets", short: "Wallets", icon: Wallet2 },

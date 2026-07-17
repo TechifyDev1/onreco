@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import {
     Bell,
-    Building2,
     ChevronDown,
     CreditCard,
     LogOut,
@@ -12,14 +11,23 @@ import {
     User as UserIcon,
 } from "lucide-react";
 
+import { useUserProfileStore } from "@/providers/user-profile-store";
 import LogoutDialog from "./LogoutDialog";
+
+function getInitials(firstName?: string, lastName?: string): string {
+    return ((firstName?.[0] ?? "") + (lastName?.[0] ?? "")).toUpperCase() || "U";
+}
 
 export default function AccountMenu() {
     const [open, setOpen] = useState(false);
     const [showLogout, setShowLogout] = useState(false);
     const ref = useRef<HTMLDivElement>(null);
+    const { userProfile } = useUserProfileStore();
 
-    // Close on outside click.
+    const initials = getInitials(userProfile?.firstName, userProfile?.lastName);
+    const fullName = [userProfile?.firstName, userProfile?.lastName].filter(Boolean).join(" ") || "User";
+    const email = userProfile?.email ?? "";
+
     useEffect(() => {
         if (!open) return;
         const onClick = (e: MouseEvent) => {
@@ -31,7 +39,6 @@ export default function AccountMenu() {
         return () => document.removeEventListener("mousedown", onClick);
     }, [open]);
 
-    // Close on ESC.
     useEffect(() => {
         if (!open) return;
         const onKey = (e: KeyboardEvent) => {
@@ -44,9 +51,6 @@ export default function AccountMenu() {
     const handleConfirmLogout = () => {
         setShowLogout(false);
         setOpen(false);
-        // Placeholder: real flow would call signOut() (clearing the
-        // onreco_session cookie / auth provider session) and then push to /login.
-        // Hard navigation chosen deliberately so all client state is dropped.
         window.location.href = "/login";
     };
 
@@ -65,10 +69,10 @@ export default function AccountMenu() {
                     }
                 >
                     <div className="w-7 h-7 rounded-full bg-primary-container/30 border border-primary-container/50 flex items-center justify-center text-primary text-xs font-semibold">
-                        JD
+                        {initials}
                     </div>
                     <span className="hidden md:inline text-sm text-on-surface font-medium">
-                        John Doe
+                        {fullName}
                     </span>
                     <ChevronDown
                         className={
@@ -88,19 +92,19 @@ export default function AccountMenu() {
                         <div className="p-4 border-b border-outline-variant/10">
                             <div className="flex items-center gap-3">
                                 <div className="w-10 h-10 rounded-full bg-primary-container/30 border border-primary-container/50 flex items-center justify-center text-primary text-sm font-bold shrink-0">
-                                    JD
+                                    {initials}
                                 </div>
                                 <div className="min-w-0">
                                     <div className="flex items-center gap-2">
                                         <span className="text-sm font-semibold text-on-surface truncate">
-                                            John Doe
+                                            {fullName}
                                         </span>
                                         <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-semibold tracking-[0.05em] uppercase bg-primary/10 text-primary shrink-0">
                                             Owner
                                         </span>
                                     </div>
                                     <div className="text-xs text-on-surface-variant truncate">
-                                        john@acme.com
+                                        {email}
                                     </div>
                                 </div>
                             </div>
