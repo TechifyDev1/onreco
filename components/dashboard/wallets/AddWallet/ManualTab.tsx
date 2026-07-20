@@ -88,24 +88,30 @@ export default function ManualTab({
                     Chain <span className="text-tertiary">*</span>
                 </label>
                 <div className="grid grid-cols-3 gap-2">
-                    {SUPPORTED_CHAINS.map(({ value, label: displayLabel }) => {
+                    {SUPPORTED_CHAINS.map(({ value, label: displayLabel, soon }) => {
                         const isActive = chainValue === value;
                         return (
                             <button
                                 key={value}
                                 type="button"
+                                disabled={!!soon}
                                 onClick={() => {
                                     setChainValue(value);
                                     if (chainError) setChainError('');
                                 }}
                                 aria-pressed={isActive}
-                                className={`px-3 py-2.5 rounded-lg text-xs font-semibold tracking-wider uppercase border ${
-                                    isActive
-                                        ? 'bg-primary/10 text-primary border-primary/40'
-                                        : 'bg-surface-container-low text-on-surface-variant border-outline-variant/20 hover:text-on-surface hover:border-primary/30'
+                                className={`px-3 py-2.5 rounded-lg text-xs font-semibold tracking-wider uppercase border inline-flex items-center gap-1.5 ${
+                                    soon
+                                        ? 'bg-surface-container-low text-on-surface-variant/50 border-outline-variant/10 cursor-not-allowed'
+                                        : isActive
+                                            ? 'bg-primary/10 text-primary border-primary/40'
+                                            : 'bg-surface-container-low text-on-surface-variant border-outline-variant/20 hover:text-on-surface hover:border-primary/30'
                                 }`}
                             >
                                 {displayLabel}
+                                {soon && (
+                                    <span className="text-[9px] tracking-normal normal-case opacity-60">Soon</span>
+                                )}
                             </button>
                         );
                     })}

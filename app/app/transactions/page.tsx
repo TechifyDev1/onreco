@@ -2,9 +2,26 @@ import FilterHeader from '@/components/dashboard/transaction/FilterHeader';
 import FilterStrip from '@/components/dashboard/transaction/FilterStrip';
 import TransactionBody from '@/components/dashboard/transaction/TransactionBody';
 import PaginationFooter from '@/components/dashboard/transaction/PaginationFooter';
+import TransactionStoreInitializer from '@/providers/TransactionStoreInitializer';
+import { TransactionService } from '@/services/TransactionService';
+import { ApiError } from '@/services/ApiError';
+import { Transaction } from '@/app/app/_data/transactions';
 
-export default function Page() {
+export default async function Page() {
+   let transactions: Transaction[] = [];
+   try {
+      transactions = await TransactionService.getTransactions();
+   } catch (error) {
+      if (error instanceof ApiError) {
+         console.error('[TransactionsPage] Failed to fetch transactions:', error.message);
+      } else {
+         console.error('[TransactionsPage] Failed to fetch transactions:', error);
+      }
+   }
+
    return (
+      <>
+      <TransactionStoreInitializer transactions={transactions} />
       <div className="flex flex-col gap-6 md:gap-8 animate-fade-in">
          {/* Header */}
          <header className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
@@ -45,5 +62,6 @@ export default function Page() {
             <PaginationFooter />
          </section>
       </div>
+      </>
    );
 }

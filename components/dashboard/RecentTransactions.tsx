@@ -1,6 +1,7 @@
 'use client';
 
-import { ArrowDownLeft, ArrowUpRight, ExternalLink, Inbox } from 'lucide-react';
+import { useState } from 'react';
+import { ArrowDownLeft, ArrowUpRight, Check, Copy, ExternalLink, Inbox } from 'lucide-react';
 import { useDashboardStore } from '@/providers/dashboard-store';
 import type { SyncStatus } from '@/services/DashboardService';
 
@@ -28,6 +29,13 @@ function shortAddress(addr: string): string {
 
 export default function RecentTransactions() {
    const recentTransactions = useDashboardStore((s) => s.recentTransactions);
+   const [copiedHash, setCopiedHash] = useState<string | null>(null);
+
+   const handleCopyHash = async (hash: string) => {
+      await navigator.clipboard.writeText(hash);
+      setCopiedHash(hash);
+      setTimeout(() => setCopiedHash(null), 1200);
+   };
 
    return (
       <section
@@ -109,14 +117,19 @@ export default function RecentTransactions() {
                               </td>
                               <td className="px-6 py-4 hidden md:table-cell text-on-surface-variant">{tx.chain}</td>
                               <td className="px-6 py-4 hidden lg:table-cell font-mono text-xs text-on-surface-variant">
-                                 <a
-                                    href="#"
-                                    className="inline-flex items-center gap-1 hover:text-primary transition-colors"
+                                 <button
+                                    type="button"
+                                    onClick={() => handleCopyHash(tx.txHash)}
+                                    className="inline-flex items-center gap-1 hover:text-primary transition-colors cursor-pointer"
                                     title={tx.txHash}
                                  >
                                     {shortAddress(tx.txHash)}
-                                    <ExternalLink className="w-3 h-3" strokeWidth={1.75} />
-                                 </a>
+                                    {copiedHash === tx.txHash ? (
+                                       <Check className="w-3 h-3 text-primary" strokeWidth={2} />
+                                    ) : (
+                                       <Copy className="w-3 h-3" strokeWidth={1.75} />
+                                    )}
+                                 </button>
                               </td>
                               <td className="px-6 py-4">
                                  <span

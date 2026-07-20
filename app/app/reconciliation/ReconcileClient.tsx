@@ -1,52 +1,30 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
-import {
-   AlertCircle,
-   ArrowRight,
-   CheckCircle2,
-   CircleHelp,
-   Clock,
-   ExternalLink,
-   Link2,
-   Loader2,
-   RefreshCw,
-   Sparkles,
-} from 'lucide-react';
-import {
-   confidenceStyle,
-   confidenceLabel,
-   type ReconcileMatch,
-   type ReconcileResponse,
-} from '../_data/reconciliation';
+import { useState } from 'react';
+import { ArrowRight, CheckCircle2, CircleHelp, ExternalLink, Link2, Loader2, RefreshCw } from 'lucide-react';
+import { confidenceStyle, confidenceLabel, type ReconcileMatch } from '../_data/reconciliation';
 import ReconcileService from '@/services/ReconcileService';
 import { useToastStore } from '@/providers/toast-provider';
+import { useReconcileStore } from '@/providers/reconcile-store';
 
 export default function ReconcileClient() {
-   const [data, setData] = useState<ReconcileResponse | null>(null);
-   const [loading, setLoading] = useState(true);
-   const [error, setError] = useState<string | null>(null);
+   const { matches, totalPending, totalOpenInvoices, setData } = useReconcileStore();
+   const [loading, setLoading] = useState(false);
    const [confirmingId, setConfirmingId] = useState<string | null>(null);
    const { show } = useToastStore();
 
-   const fetchData = useCallback(async () => {
+   async function handleRefresh() {
       setLoading(true);
-      setError(null);
       try {
          const result = await ReconcileService.getReconciliations();
          setData(result);
       } catch (err) {
          const message = err instanceof Error ? err.message : 'Failed to load reconciliations.';
-         setError(message);
          show(message, 'error');
       } finally {
          setLoading(false);
       }
-   }, [show]);
-
-   useEffect(() => {
-      fetchData();
-   }, [fetchData]);
+   }
 
    async function handleConfirm(match: ReconcileMatch) {
       if (!match.invoice) return;
@@ -54,7 +32,7 @@ export default function ReconcileClient() {
       try {
          await ReconcileService.confirmMatch(match.journalEntryId, match.invoice.id);
          show(`Matched to ${match.invoice.docNumber ?? match.invoice.id}.`, 'success');
-         await fetchData();
+         await handleRefresh();
       } catch (err) {
          show(err instanceof Error ? err.message : 'Failed to confirm match.', 'error');
       } finally {
@@ -62,7 +40,6 @@ export default function ReconcileClient() {
       }
    }
 
-   const matches = data?.matches ?? [];
    const matched = matches.filter((m) => m.confidence >= 90).length;
    const needsReview = matches.filter((m) => m.confidence >= 50 && m.confidence < 90).length;
    const noMatch = matches.filter((m) => m.confidence < 50).length;
@@ -71,18 +48,13 @@ export default function ReconcileClient() {
       <div className="flex flex-col gap-6 md:gap-8 animate-fade-in">
          <header className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
             <div>
-               <h1 className="text-[28px] leading-9 font-semibold tracking-tight text-on-surface">
-                  Reconciliation
-               </h1>
-               <p className="text-sm text-on-surface-variant mt-1">
-                  Match incoming stablecoin payments to open QuickBooks invoices. Review
-                  confidence scores and approve matches.
-               </p>
+               <h1 className="text-[28px] leading-9 font-semibold tracking-tight text-on-surface">Reconciliation</h1>
+               <p className="text-sm text-on-surface-variant mt-1">Match incoming stablecoin payments to open QuickBooks invoices. Review confidence scores and approve matches.</p>
             </div>
             <div className="flex items-center gap-2">
                <button
                   type="button"
-                  onClick={fetchData}
+                  onClick={handleRefresh}
                   disabled={loading}
                   className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg border border-outline-variant/20 text-on-surface text-xs font-semibold tracking-wider uppercase hover:border-primary/40 transition-colors disabled:opacity-50"
                >
@@ -94,23 +66,16 @@ export default function ReconcileClient() {
 
          {/* Stat row */}
          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-            <StatTile label="Pending" value={data?.totalPending ?? 0} accent="text-on-surface" />
-            <StatTile label="Open invoices" value={data?.totalOpenInvoices ?? 0} accent="text-secondary" />
+            <StatTile label="Pending" value={totalPending} accent="text-on-surface" />
+            <StatTile label="Open invoices" value={totalOpenInvoices} accent="text-secondary" />
             <StatTile label="Strong matches" value={matched} accent="text-primary" />
             <StatTile label="Needs review" value={needsReview + noMatch} accent="text-tertiary" />
          </div>
 
-         {/* Error */}
-         {error && (
-            <div className="rounded-lg border border-error/30 bg-error/10 px-4 py-3 text-xs text-error">
-               {error}
-            </div>
-         )}
-
          {/* Main grid */}
          <div className="grid grid-cols-1 xl:grid-cols-12 gap-6">
             <section aria-label="Match candidates" className="xl:col-span-8 flex flex-col gap-4">
-               {loading ? (
+               {loading && matches.length === 0 ? (
                   <div className="bg-glass rounded-xl p-10 glow-top border border-outline-variant/10 flex flex-col items-center justify-center text-center gap-3 min-h-50">
                      <Loader2 className="w-6 h-6 text-primary animate-spin" strokeWidth={1.75} />
                      <p className="text-xs text-on-surface-variant">Loading reconciliations…</p>
@@ -118,27 +83,15 @@ export default function ReconcileClient() {
                ) : matches.length === 0 ? (
                   <EmptyState />
                ) : (
-                  matches.map((m) => (
-                     <MatchCard
-                        key={m.journalEntryId}
-                        match={m}
-                        confirming={confirmingId === m.journalEntryId}
-                        onConfirm={() => handleConfirm(m)}
-                     />
-                  ))
+                  matches.map((m) => <MatchCard key={m.journalEntryId} match={m} confirming={confirmingId === m.journalEntryId} onConfirm={() => handleConfirm(m)} />)
                )}
             </section>
 
             {/* How it works */}
             <aside className="xl:col-span-4">
                <section className="bg-glass rounded-xl p-6 glow-top border border-outline-variant/10 sticky top-20">
-                  <h2 className="text-[16px] leading-6 font-semibold tracking-tight text-on-surface mb-3">
-                     How matching works
-                  </h2>
-                  <p className="text-sm text-on-surface-variant leading-relaxed mb-5">
-                     Onreco compares every pending stablecoin payment against your open
-                     QuickBooks invoices and scores each pair.
-                  </p>
+                  <h2 className="text-[16px] leading-6 font-semibold tracking-tight text-on-surface mb-3">How matching works</h2>
+                  <p className="text-sm text-on-surface-variant leading-relaxed mb-5">Onreco compares every pending stablecoin payment against your open QuickBooks invoices and scores each pair.</p>
                   <ul className="flex flex-col gap-3">
                      {[
                         { k: 'Amount', v: 'Exact or near-exact USD value match (up to 50 pts)', letter: 'A' },
@@ -159,15 +112,15 @@ export default function ReconcileClient() {
                   <div className="mt-6 pt-5 border-t border-outline-variant/10 flex flex-col gap-2">
                      <div className="flex items-center gap-2 text-xs text-on-surface-variant">
                         <span className="w-2 h-2 rounded-full bg-primary" />
-                        <span>90–100% — Strong match</span>
+                        <span>90-100% - Strong match</span>
                      </div>
                      <div className="flex items-center gap-2 text-xs text-on-surface-variant">
                         <span className="w-2 h-2 rounded-full bg-secondary" />
-                        <span>70–89% — Good match</span>
+                        <span>70-89% - Good match</span>
                      </div>
                      <div className="flex items-center gap-2 text-xs text-on-surface-variant">
                         <span className="w-2 h-2 rounded-full bg-tertiary" />
-                        <span>Below 70% — Weak / no match</span>
+                        <span>Below 70% - Weak / no match</span>
                      </div>
                   </div>
                </section>
@@ -177,20 +130,10 @@ export default function ReconcileClient() {
    );
 }
 
-function MatchCard({
-   match,
-   confirming,
-   onConfirm,
-}: {
-   match: ReconcileMatch;
-   confirming: boolean;
-   onConfirm: () => void;
-}) {
+function MatchCard({ match, confirming, onConfirm }: { match: ReconcileMatch; confirming: boolean; onConfirm: () => void }) {
    const conf = confidenceStyle(match.confidence);
    const label = confidenceLabel(match.confidence);
-   const shortAddress = match.walletAddress
-      ? `${match.walletAddress.slice(0, 6)}…${match.walletAddress.slice(-4)}`
-      : '—';
+   const shortAddress = match.walletAddress ? `${match.walletAddress.slice(0, 6)}…${match.walletAddress.slice(-4)}` : '—';
    const txDate = new Date(match.txDate).toLocaleDateString();
 
    return (
@@ -199,12 +142,8 @@ function MatchCard({
             {/* Payment */}
             <div className="flex-1 min-w-0">
                <div className="flex items-center gap-2 mb-2">
-                  <span className="text-[10px] font-semibold tracking-[0.08em] uppercase text-on-surface-variant">
-                     Wallet Payment
-                  </span>
-                  <span className="px-1.5 py-0.5 rounded text-[10px] font-semibold tracking-wider uppercase bg-primary/10 text-primary">
-                     {match.currency}
-                  </span>
+                  <span className="text-[10px] font-semibold tracking-[0.08em] uppercase text-on-surface-variant">Wallet Payment</span>
+                  <span className="px-1.5 py-0.5 rounded text-[10px] font-semibold tracking-wider uppercase bg-primary/10 text-primary">{match.currency}</span>
                </div>
                <div className="font-mono text-on-surface text-base">{match.amount}</div>
                <div className="flex items-center gap-2 mt-1 text-xs text-on-surface-variant">
@@ -223,21 +162,15 @@ function MatchCard({
 
             {/* Confidence */}
             <div className="md:w-28 flex md:flex-col items-center md:items-center gap-2 md:gap-1 shrink-0">
-               <span className="text-[10px] font-semibold tracking-[0.08em] uppercase text-on-surface-variant">
-                  Confidence
-               </span>
-               <span className={'inline-block px-2.5 py-1 rounded-md border font-mono text-sm font-semibold ' + conf}>
-                  {match.confidence}%
-               </span>
+               <span className="text-[10px] font-semibold tracking-[0.08em] uppercase text-on-surface-variant">Confidence</span>
+               <span className={'inline-block px-2.5 py-1 rounded-md border font-mono text-sm font-semibold ' + conf}>{match.confidence}%</span>
                <span className="text-[10px] text-on-surface-variant">{label}</span>
             </div>
 
             {/* Invoice */}
             <div className="flex-1 min-w-0">
                <div className="flex items-center gap-2 mb-2">
-                  <span className="text-[10px] font-semibold tracking-[0.08em] uppercase text-on-surface-variant">
-                     Best Invoice Match
-                  </span>
+                  <span className="text-[10px] font-semibold tracking-[0.08em] uppercase text-on-surface-variant">Best Invoice Match</span>
                </div>
                {!match.invoice ? (
                   <div className="flex items-center gap-2 text-on-surface-variant text-sm">
@@ -246,20 +179,14 @@ function MatchCard({
                   </div>
                ) : (
                   <>
-                     <div className="font-mono text-on-surface text-base">
-                        {match.invoice.docNumber ?? match.invoice.id}
-                     </div>
+                     <div className="font-mono text-on-surface text-base">{match.invoice.docNumber ?? match.invoice.id}</div>
                      <div className="flex items-center gap-2 mt-1 text-xs text-on-surface-variant">
                         <span>{match.invoice.customerName ?? 'Unknown customer'}</span>
                         <span>·</span>
                         <span className="font-mono">${match.invoice.totalAmount}</span>
                         <span>·</span>
                         <span>Due {match.invoice.dueDate ? new Date(match.invoice.dueDate).toLocaleDateString() : '—'}</span>
-                        <a
-                           href="#"
-                           aria-label="Open invoice"
-                           className="text-on-surface-variant hover:text-primary transition-colors"
-                        >
+                        <a href="#" aria-label="Open invoice" className="text-on-surface-variant hover:text-primary transition-colors">
                            <ExternalLink className="w-3 h-3" strokeWidth={1.75} />
                         </a>
                      </div>
@@ -277,11 +204,7 @@ function MatchCard({
                   disabled={confirming}
                   className="btn-primary px-3 py-1.5 rounded-lg text-on-primary-container text-xs font-semibold tracking-wider uppercase hover:opacity-90 transition-opacity inline-flex items-center gap-1.5 disabled:opacity-60"
                >
-                  {confirming ? (
-                     <Loader2 className="w-3 h-3 animate-spin" strokeWidth={2.5} />
-                  ) : (
-                     <CheckCircle2 className="w-3 h-3" strokeWidth={2.5} />
-                  )}
+                  {confirming ? <Loader2 className="w-3 h-3 animate-spin" strokeWidth={2.5} /> : <CheckCircle2 className="w-3 h-3" strokeWidth={2.5} />}
                   Approve Match
                </button>
             </div>
@@ -294,9 +217,7 @@ function StatTile({ label, value, accent }: { label: string; value: number; acce
    return (
       <div className="bg-glass rounded-xl p-5 glow-top border border-outline-variant/10">
          <div className="flex items-center justify-between mb-3">
-            <span className="text-[10px] font-semibold tracking-[0.08em] uppercase text-on-surface-variant">
-               {label}
-            </span>
+            <span className="text-[10px] font-semibold tracking-[0.08em] uppercase text-on-surface-variant">{label}</span>
          </div>
          <div className={'text-[24px] leading-8 font-semibold tracking-tight ' + accent}>{value}</div>
       </div>
@@ -312,8 +233,7 @@ function EmptyState() {
          <div>
             <h3 className="text-base font-semibold text-on-surface">No pending matches</h3>
             <p className="text-xs text-on-surface-variant max-w-sm mx-auto mt-1.5 leading-relaxed">
-               All stablecoin payments have been reconciled, or no open invoices exist
-               in QuickBooks. Categorize pending transactions first.
+               All stablecoin payments have been reconciled, or no open invoices exist in QuickBooks. Categorize pending transactions first.
             </p>
          </div>
       </div>

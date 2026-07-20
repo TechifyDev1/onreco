@@ -42,15 +42,17 @@ export function buildConditions(rule: Rule): ConditionVM[] {
     out.push({
       icon: ArrowRight,
       label: 'Direction',
-      value: `= ${rule.direction}`,
+      value: rule.direction === 'RECEIVED' ? 'Incoming' : 'Outgoing',
     });
   }
 
   if (rule.counterpartyAddress) {
+    const addr = rule.counterpartyAddress;
+    const truncated = addr.length > 12 ? `${addr.slice(0, 6)}…${addr.slice(-4)}` : addr;
     out.push({
       icon: GitBranch,
       label: 'Counterparty',
-      value: `= ${rule.counterpartyAddress}`,
+      value: truncated,
     });
   }
 

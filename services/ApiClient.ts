@@ -2,6 +2,7 @@ import { ApiError } from './ApiError';
 
 export default class ApiClient {
    private static readonly baseUrl: string = 'http://localhost:3000/api';
+   private static isLoggingOut = false;
 
    private static readonly defaultOptions: RequestInit = {
       headers: {
@@ -28,6 +29,21 @@ export default class ApiClient {
       return this.request<null>(path, { method: 'DELETE' });
    }
 
+   private static async handleSessionExpired() {
+      if (this.isLoggingOut) return;
+      this.isLoggingOut = true;
+      try {
+         await fetch(`${this.baseUrl}/auth/logout`, {
+            method: 'POST',
+            headers: { 'X-Client-Type': 'web' },
+            credentials: 'include',
+         });
+      } catch {
+         // Best-effort — cookies will expire on their own
+      }
+      window.location.href = '/login';
+   }
+
    private static async request<T>(
       path: string,
       options: RequestInit
@@ -52,6 +68,11 @@ export default class ApiClient {
          headers: requestHeaders,
       });
 
+      if (response.status === 401 && typeof window !== 'undefined') {
+         this.handleSessionExpired();
+         throw new ApiError('Unauthorized', 'Session expired', new Date().toISOString());
+      }
+
       if (!response.ok) {
          let errorData: any;
          try {
@@ -69,16 +90,20 @@ export default class ApiClient {
          throw ApiError.fromMap(errorData);
       }
 
+      const contentType = response.headers.get('content-type') || '';
       let data: T;
-      try {
-         data = await response.json();
-      } catch (parseError) {
-         console.error(
-            `[ApiClient] Failed to parse success response JSON from ${path}. Status: ${response.status}`
-         );
-         throw new Error(`Failed to parse success JSON from ${path}`);
+      if (contentType.includes('application/json')) {
+         try {
+            data = await response.json();
+         } catch (parseError) {
+            console.error(
+               `[ApiClient] Failed to parse success response JSON from ${path}. Status: ${response.status}`
+            );
+            throw new Error(`Failed to parse success JSON from ${path}`);
+         }
+      } else {
+         data = undefined as T;
       }
-      // Return both the data and the headers back to the AuthService layer
       return { data, headers: response.headers };
    }
 }

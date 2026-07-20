@@ -42,6 +42,8 @@ export interface WalletResponse {
    label: string;
    active: boolean;
    createdAt: string;
+   lastSyncAt: string | null;
+   transactionCount30d: number;
 }
 
 export interface DashboardSummary {

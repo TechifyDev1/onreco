@@ -181,7 +181,7 @@ export function HowConditionsWork() {
   const items: { k: string; v: string }[] = [
     { k: 'Wallet', v: 'Optional. If set, the rule only fires for transactions on that wallet.' },
     { k: 'Direction', v: 'Optional. RECEIVED or SENT. Leave empty to match both.' },
-    { k: 'Counterparty', v: 'Optional. Case-insensitive match against the counterparty address.' },
+    { k: 'Counterparty', v: 'Optional. Paste the wallet address of the person or business you transact with.' },
     { k: 'Order', v: 'Rules are evaluated by priority (highest first). The first match wins.' },
     { k: 'Inactive', v: 'Inactive rules are stored but never evaluated.' },
   ];

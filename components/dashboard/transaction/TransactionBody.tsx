@@ -1,10 +1,12 @@
 'use client';
 import { TX_STATUS_STYLES } from '@/app/app/_data/transactions';
 import { useTransactionStore } from '@/providers/transaction-store';
-import { ArrowDownLeft, ArrowUpRight, ExternalLink, Receipt } from 'lucide-react';
+import { ArrowDownLeft, ArrowUpRight, Copy, Receipt } from 'lucide-react';
+import { useToastStore } from '@/providers/toast-provider';
 
 export default function TransactionBody() {
    const { transactions } = useTransactionStore();
+   const { show } = useToastStore();
    if (transactions.length === 0) {
       return (
          <tr>
@@ -32,7 +34,7 @@ export default function TransactionBody() {
       const isIn = tx.direction === 'RECEIVED';
       return (
          <tr key={tx.id} className="border-t border-outline-variant/10 hover:bg-surface-container-low/50 transition-colors">
-            <td className="px-5 py-4 text-xs text-on-surface-variant whitespace-nowrap">{tx.date}</td>
+            <td className="px-5 py-4 text-xs text-on-surface-variant whitespace-nowrap">{new Date(tx.date).toLocaleDateString()}</td>
             <td className="px-5 py-4">
                <div className={'w-8 h-8 rounded-lg flex items-center justify-center ' + (isIn ? 'bg-primary/10 text-primary' : 'bg-secondary/15 text-secondary')}>
                   {isIn ? <ArrowDownLeft className="w-4 h-4" strokeWidth={2} /> : <ArrowUpRight className="w-4 h-4" strokeWidth={2} />}
@@ -44,10 +46,17 @@ export default function TransactionBody() {
             <td className="px-5 py-4 hidden md:table-cell text-on-surface-variant">{tx.wallet}</td>
             <td className="px-5 py-4 hidden lg:table-cell text-on-surface-variant">{tx.category}</td>
             <td className="px-5 py-4 hidden xl:table-cell font-mono text-xs max-w-37.5">
-               <a href="#" className="inline-flex items-center gap-1 text-on-surface-variant hover:text-primary transition-colors w-full">
+               <button
+                  type="button"
+                  onClick={() => {
+                     navigator.clipboard.writeText(tx.counterparty);
+                     show('Address copied to clipboard.', 'success');
+                  }}
+                  className="inline-flex items-center gap-1 text-on-surface-variant hover:text-primary transition-colors w-full"
+               >
                   <span className="truncate flex-1">{tx.counterparty}</span>
-                  <ExternalLink className="w-3 h-3 shrink-0" strokeWidth={1.75} />
-               </a>
+                  <Copy className="w-3 h-3 shrink-0" strokeWidth={1.75} />
+               </button>
             </td>
             <td className="px-5 py-4">
                <span className={'inline-block px-2 py-1 rounded text-[10px] font-semibold tracking-wider uppercase ' + TX_STATUS_STYLES[tx.status]}>{tx.status}</span>

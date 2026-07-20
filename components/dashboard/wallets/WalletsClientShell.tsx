@@ -103,9 +103,9 @@ function WalletsGrid({ onAddClick }: { onAddClick: () => void }) {
                </div>
 
                <div className="pt-3 border-t border-outline-variant/10 flex items-center justify-between text-xs text-on-surface-variant">
-                  <span>Last sync · {wallet.lastSync ?? '—'}</span>
+                  <span>Last sync · {wallet.lastSyncAt ? new Date(wallet.lastSyncAt).toLocaleDateString() : '—'}</span>
                   <span>
-                     <span className="font-semibold text-on-surface">0</span> tx (30d)
+                     <span className="font-semibold text-on-surface">{wallet.transactionCount30d}</span> tx (30d)
                   </span>
                </div>
             </article>

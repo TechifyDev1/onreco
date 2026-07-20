@@ -34,6 +34,14 @@ export default class AuthService {
   //   this.setAccessToken(tokenResponse.accessToken)
   //   return
   // }
+
+  static async logout(): Promise<void> {
+    try {
+      await ApiClient.post(`${this.authBasePath}/logout`, {});
+    } catch {
+      // Best-effort — session will be cleared by redirect
+    }
+  }
 }
 
 export interface AuthResponse {

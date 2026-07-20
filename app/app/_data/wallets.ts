@@ -10,8 +10,8 @@ export type Wallet = {
    label: string;
    active: boolean;
    createdAt: string;
-   lastSync?: string;
-   transactions30d?: number;
+   lastSyncAt: string | null;
+   transactionCount30d: number;
 };
 
 export type AddWalletRequest = {
@@ -21,10 +21,10 @@ export type AddWalletRequest = {
    label?: string;
 };
 
-export const SUPPORTED_CHAINS: { value: SupportedChain; label: string }[] = [
-   { value: 'SOLANA', label: 'Solana' },
+export const SUPPORTED_CHAINS: { value: SupportedChain; label: string; soon?: boolean }[] = [
    { value: 'BASE', label: 'Base' },
-   { value: 'TRON', label: 'Tron' },
+   { value: 'SOLANA', label: 'Solana' },
+   { value: 'TRON', label: 'Tron', soon: true },
 ];
 
 export const SUPPORTED_CURRENCIES: SupportedCurrency[] = ['USDT', 'USDC'];
@@ -36,7 +36,7 @@ export const NETWORK_CHIP: Record<SupportedChain, string> = {
 };
 
 export const SUPPORTED_NETWORKS: { name: SupportedChain; status: 'active' | 'soon' }[] = [
-   { name: 'TRON', status: 'active' },
-   { name: 'SOLANA', status: 'active' },
    { name: 'BASE', status: 'active' },
+   { name: 'SOLANA', status: 'active' },
+   { name: 'TRON', status: 'soon' },
 ];

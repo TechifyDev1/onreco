@@ -125,8 +125,9 @@ export default function RuleDialog({
               {isEdit ? 'Edit rule' : 'New rule'}
             </h2>
             <p className="text-xs text-on-surface-variant mt-1">
-              A rule fires when a transaction matches all of the conditions you
-              set. The first matching rule (by priority, highest first) wins.
+              Set conditions that a transaction must meet for this rule to fire.
+              Leave a field empty to match any value. The highest-priority match
+              wins.
             </p>
           </div>
           <button
@@ -186,7 +187,7 @@ export default function RuleDialog({
           </div>
 
           <Field
-            label="Counterparty address (optional)"
+            label="Counterparty address"
             error={fieldErrors?.counterpartyAddress}
           >
             <input
@@ -198,7 +199,8 @@ export default function RuleDialog({
               disabled={submitting}
             />
             <p className="text-[10px] text-on-surface-variant mt-1">
-              Case-insensitive match against the counterparty address.
+              Match transactions sent to or from this address. Paste the wallet
+              address of the person or business you transact with.
             </p>
           </Field>
 
