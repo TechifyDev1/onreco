@@ -44,10 +44,7 @@ export default class ApiClient {
       window.location.href = '/login';
    }
 
-   private static async request<T>(
-      path: string,
-      options: RequestInit
-   ): Promise<{ data: T; headers: Headers }> {
+   private static async request<T>(path: string, options: RequestInit): Promise<{ data: T; headers: Headers }> {
       const requestHeaders = new Headers({
          ...this.defaultOptions.headers,
          ...options.headers,
@@ -78,15 +75,10 @@ export default class ApiClient {
          try {
             errorData = await response.json();
          } catch (parseError) {
-            console.error(
-               `[ApiClient] Failed to parse error response JSON from ${path}. Status: ${response.status}`
-            );
+            console.error(`[ApiClient] Failed to parse error response JSON from ${path}. Status: ${response.status}`);
             throw new Error(`Request failed with status ${response.status}`);
          }
-         console.error(
-            `[ApiClient] Request failed: ${path}, Status: ${response.status}, Error data:`,
-            errorData
-         );
+         console.error(`[ApiClient] Request failed: ${path}, Status: ${response.status}, Error data:`, errorData);
          throw ApiError.fromMap(errorData);
       }
 
@@ -96,9 +88,7 @@ export default class ApiClient {
          try {
             data = await response.json();
          } catch (parseError) {
-            console.error(
-               `[ApiClient] Failed to parse success response JSON from ${path}. Status: ${response.status}`
-            );
+            console.error(`[ApiClient] Failed to parse success response JSON from ${path}. Status: ${response.status}`);
             throw new Error(`Failed to parse success JSON from ${path}`);
          }
       } else {

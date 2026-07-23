@@ -9,6 +9,7 @@ interface IntegrationStoreState {
   available: Integration[];
   soon: Integration[];
   setIntegrations: (integrations: Integration[]) => void;
+  markDisconnected: (slug: string) => void;
 }
 
 export const useIntegrationStore = create<IntegrationStoreState>((set) => ({
@@ -23,6 +24,19 @@ export const useIntegrationStore = create<IntegrationStoreState>((set) => ({
       connected: integrations.filter((i) => i.connected),
       available: integrations.filter((i) => i.available && !i.connected),
       soon: integrations.filter((i) => !i.available),
+    }),
+
+  markDisconnected: (slug) =>
+    set((state) => {
+      const updated = state.integrations.map((i) =>
+        i.slug === slug ? { ...i, connected: false, connectedAt: undefined } : i
+      );
+      return {
+        integrations: updated,
+        connected: updated.filter((i) => i.connected),
+        available: updated.filter((i) => i.available && !i.connected),
+        soon: updated.filter((i) => !i.available),
+      };
     }),
 }));
 

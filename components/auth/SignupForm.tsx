@@ -2,7 +2,7 @@
 import { handleSignup } from '@/app/actions/auth'
 import { useToastStore } from '@/providers/toast-provider'
 import { useUserProfileStore } from '@/providers/user-profile-store'
-import { UserPlus, Wallet } from 'lucide-react'
+import { UserPlus } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useActionState, useEffect } from 'react'
 
@@ -16,7 +16,7 @@ export default function SignupForm() {
     if (state.ok) {
       setUserProfile(state.data)
       show('Successfully signed up', 'success')
-      router.push('/app')
+      router.push('/verify-email')
     } else {
       if (state.fieldErrors) {
         const validations = Object.values(state.fieldErrors)
@@ -114,24 +114,6 @@ export default function SignupForm() {
         {isPending
           ? 'Setting up your account...'
           : 'Start Automating Accounting'}
-      </button>
-
-      <div className="relative py-4 flex items-center justify-center">
-        <div className="absolute inset-0 flex items-center">
-          <div className="w-full border-t border-outline-variant/20" />
-        </div>
-        <span className="relative bg-surface px-4 text-[10px] font-semibold tracking-[0.08em] text-on-surface-variant uppercase">
-          or verify via
-        </span>
-      </div>
-
-      <button
-        type="button"
-        disabled={isPending}
-        className="w-full py-3 bg-surface-container-highest/30 border border-outline-variant/50 text-on-surface text-xs font-semibold tracking-wider uppercase rounded-lg hover:bg-surface-container-highest/50 flex items-center justify-center gap-3 transition-all"
-      >
-        <Wallet className="w-5 h-5" strokeWidth={1.75} />
-        Connect Wallet for Stablecoin Tracking
       </button>
     </form>
   )

@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Camera, Save, User } from 'lucide-react';
 import SectionCard from './SectionCard';
 import SectionHeading from './SectionHeading';
@@ -16,6 +16,13 @@ export default function UserProfileSection() {
   const [firstName, setFirstName] = useState(userProfile?.firstName ?? '');
   const [lastName, setLastName] = useState(userProfile?.lastName ?? '');
   const [saving, setSaving] = useState(false);
+
+  useEffect(() => {
+    if (userProfile) {
+      setFirstName(userProfile.firstName ?? '');
+      setLastName(userProfile.lastName ?? '');
+    }
+  }, [userProfile]);
 
   const initials = ((firstName?.[0] ?? '') + (lastName?.[0] ?? '')).toUpperCase() || 'U';
   const fullName = [firstName, lastName].filter(Boolean).join(' ') || 'User';

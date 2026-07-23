@@ -145,14 +145,13 @@ function Block({ block }: { block: BlogBlock }) {
             Get early access
           </h3>
           <p className="text-on-surface-variant max-w-xl mx-auto mb-6">
-            Join the waitlist to get early access to Onreco and stop recording
-            stablecoin transactions by hand.
+            Create your free account to start automating stablecoin transactions.
           </p>
           <Link
-            href="/waitlist"
+            href="/signup"
             className="btn-primary inline-block text-on-primary-container text-base font-medium px-7 py-3 rounded-lg hover:opacity-90 transition-opacity"
           >
-            Join the Waitlist
+            Get Started
           </Link>
         </div>
       )

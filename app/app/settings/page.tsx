@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
-import { HelpCircle, User } from 'lucide-react';
+import { HelpCircle, ShieldCheck, User } from 'lucide-react';
 
+import EmailVerificationSection from '@/components/dashboard/settings/EmailVerificationSection';
 import SupportSection from '@/components/dashboard/settings/SupportSection';
 import UserProfileSection from '@/components/dashboard/settings/UserProfileSection';
 
@@ -35,6 +36,15 @@ export default function Page() {
                 >
                   <User className="w-4.5 h-4.5" strokeWidth={1.75} />
                   <span className="font-medium">Your Profile</span>
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#verification"
+                  className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors"
+                >
+                  <ShieldCheck className="w-4.5 h-4.5" strokeWidth={1.75} />
+                  <span className="font-medium">Email Verification</span>
                 </a>
               </li>
               <li>
@@ -80,6 +90,7 @@ export default function Page() {
         {/* Sections */}
         <div className="xl:col-span-9 flex flex-col gap-6">
           <UserProfileSection />
+          <EmailVerificationSection />
           <SupportSection />
 
           {/* TODO: uncomment when sections are ready

@@ -17,13 +17,13 @@ export default function CTASection() {
           Stop entering stablecoin transactions by hand.
         </h2>
         <p className="text-base text-on-surface-variant mb-10">
-          Join the waitlist for early access. Onreco automates stablecoin bookkeeping, reconciliation, and QuickBooks or Xero sync, so your team can focus on what matters.
+          Create your free account to start automating stablecoin bookkeeping, reconciliation, and QuickBooks or Xero sync, so your team can focus on what matters.
         </p>
         <Link
-          href="/waitlist"
+          href="/signup"
           className="btn-primary text-on-primary-container text-base font-medium px-8 py-4 rounded-lg hover:opacity-90 transition-opacity shadow-lg shadow-primary/20 cursor-pointer inline-block"
         >
-          Join the Waitlist
+          Get Started Free
         </Link>
       </div>
     </section>

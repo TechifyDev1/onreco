@@ -1,5 +1,8 @@
 import type { Metadata } from 'next';
 import RulesClientShell from '@/components/dashboard/rules/RulesClientShell';
+import AccountStoreInitializer from '@/providers/AccountStoreInitializer';
+import AccountService from '@/services/AccountService';
+import type { QuickBooksAccount } from '@/services/AccountService';
 
 export const metadata: Metadata = {
    title: 'Rules · Onreco',
@@ -11,9 +14,17 @@ export const metadata: Metadata = {
    },
 };
 
-export default function RulesPage() {
+export default async function RulesPage() {
+   let accounts: QuickBooksAccount[] = [];
+   try {
+      accounts = await AccountService.getOffsetAccounts();
+   } catch (error) {
+      console.error('[Rules Page] Failed to fetch QB accounts:', error);
+   }
+
    return (
       <div className="flex flex-col gap-6 md:gap-8 animate-fade-in">
+         <AccountStoreInitializer accounts={accounts} />
          <RulesClientShell />
       </div>
    );

@@ -18,7 +18,7 @@ import {
    TX_DIRECTION_STYLES,
 } from '../_data/categorize';
 import CategorizeService from '@/services/CategorizeService';
-import AccountService, { type QuickBooksAccount } from '@/services/AccountService';
+import { useAccountStore } from '@/providers/account-store';
 import { ApiError } from '@/services/ApiError';
 import { useToastStore } from '@/providers/toast-provider';
 
@@ -28,8 +28,7 @@ export default function CategorizeClient() {
    const [loading, setLoading] = useState(true);
    const [error, setError] = useState<string | null>(null);
 
-   const [offsetAccounts, setOffsetAccounts] = useState<QuickBooksAccount[]>([]);
-   const [accountsLoading, setAccountsLoading] = useState(true);
+   const offsetAccounts = useAccountStore((s) => s.offsetAccounts);
 
    const [selected, setSelected] = useState<Set<string>>(new Set());
    const [accountMap, setAccountMap] = useState<Map<string, string>>(new Map());
@@ -61,23 +60,6 @@ export default function CategorizeClient() {
    useEffect(() => {
       fetchEntries();
    }, [fetchEntries]);
-
-   useEffect(() => {
-      let cancelled = false;
-      AccountService.getOffsetAccounts()
-         .then((list) => {
-            if (!cancelled) {
-               setOffsetAccounts(list);
-               setAccountsLoading(false);
-            }
-         })
-         .catch(() => {
-            if (!cancelled) setAccountsLoading(false);
-         });
-      return () => {
-         cancelled = true;
-      };
-   }, []);
 
    function toggleSelect(id: string) {
       setSelected((prev) => {
@@ -250,10 +232,10 @@ export default function CategorizeClient() {
                   }}
                   defaultValue=""
                   className="input bg-surface-container text-on-surface border-outline-variant/50 text-xs max-w-xs"
-                  disabled={accountsLoading}
-               >
-                  <option value="" disabled>
-                     {accountsLoading ? 'Loading accounts…' : 'Set account for all…'}
+                   disabled={offsetAccounts.length === 0}
+                >
+                   <option value="" disabled>
+                      {offsetAccounts.length === 0 ? 'No accounts available' : 'Set account for all…'}
                   </option>
                   {offsetAccounts.map((a) => (
                      <option key={a.id} value={a.id}>
@@ -436,10 +418,10 @@ export default function CategorizeClient() {
                                           setAccount(entry.id, e.target.value)
                                        }
                                        className="input bg-surface-container text-on-surface border-outline-variant/50 text-xs max-w-48"
-                                       disabled={accountsLoading}
-                                    >
-                                       <option value="" disabled>
-                                          {accountsLoading ? 'Loading…' : 'Select…'}
+                                        disabled={offsetAccounts.length === 0}
+                                     >
+                                        <option value="" disabled>
+                                           {offsetAccounts.length === 0 ? 'No accounts' : 'Select…'}
                                        </option>
                                        {offsetAccounts.map((a) => (
                                           <option key={a.id} value={a.id}>

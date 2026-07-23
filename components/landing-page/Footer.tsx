@@ -76,18 +76,28 @@ export default function Footer() {
             </h4>
             <ul className="flex flex-col gap-3">
               {[
-                'Documentation',
-                'Contact Sales',
-                'Privacy Policy',
-                'Terms of Service',
-              ].map((label) => (
-                <li key={label}>
-                  <ComingSoonLink
-                    message={`${label} will be available soon!`}
-                    className="text-sm text-on-surface-variant hover:text-primary transition-colors"
-                  >
-                    {label}
-                  </ComingSoonLink>
+                { label: 'Documentation', href: null },
+                { label: 'Contact Sales', href: null },
+                { label: 'Privacy Policy', href: '/privacy' },
+                { label: 'Terms of Service', href: null },
+                { label: 'EULA', href: '/eula' },
+              ].map((item) => (
+                <li key={item.label}>
+                  {item.href ? (
+                    <Link
+                      href={item.href}
+                      className="text-sm text-on-surface-variant hover:text-primary transition-colors"
+                    >
+                      {item.label}
+                    </Link>
+                  ) : (
+                    <ComingSoonLink
+                      message={`${item.label} will be available soon!`}
+                      className="text-sm text-on-surface-variant hover:text-primary transition-colors"
+                    >
+                      {item.label}
+                    </ComingSoonLink>
+                  )}
                 </li>
               ))}
             </ul>

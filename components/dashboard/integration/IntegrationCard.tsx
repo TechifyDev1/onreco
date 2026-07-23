@@ -1,8 +1,12 @@
+'use client';
 import { Integration } from '@/app/app/_data/integrations';
-import { ExternalLink, Plus, Settings } from 'lucide-react';
+import { ExternalLink, Loader2, Plus, Settings, Unplug } from 'lucide-react';
 import Image from 'next/image';
+import { useState } from 'react';
 import StatusPill from './StatusPill';
 import IntegrationService from '@/services/IntegrationService';
+import { useIntegrationStore } from '@/providers/integration-store';
+import { useToastStore } from '@/providers/toast-provider';
 
 export default function IntegrationCard({ integration }: { integration: Integration }) {
    const status = integration.connected
@@ -10,6 +14,26 @@ export default function IntegrationCard({ integration }: { integration: Integrat
       : integration.available
         ? 'disconnected'
         : 'soon';
+
+   const [showConfirm, setShowConfirm] = useState(false);
+   const [disconnecting, setDisconnecting] = useState(false);
+   const [connecting, setConnecting] = useState(false);
+   const { markDisconnected } = useIntegrationStore();
+   const { show } = useToastStore();
+
+   const handleDisconnect = async () => {
+      setDisconnecting(true);
+      try {
+         await IntegrationService.disconnect(integration.slug);
+         markDisconnected(integration.slug);
+         show(`${integration.name} disconnected`, 'success');
+      } catch (err) {
+         show('Failed to disconnect. Please try again.', 'error');
+      } finally {
+         setDisconnecting(false);
+         setShowConfirm(false);
+      }
+   };
 
    return (
       <article className="bg-glass rounded-xl p-5 md:p-6 glow-top border border-outline-variant/10 flex flex-col gap-4">
@@ -54,13 +78,14 @@ export default function IntegrationCard({ integration }: { integration: Integrat
                         <Settings className="w-3 h-3" strokeWidth={1.75} />
                         Configure
                      </button>
-                     <a
-                        href="#"
-                        className="btn-primary px-3 py-1.5 rounded-lg text-on-primary-container text-xs font-semibold tracking-wider uppercase hover:opacity-90 transition-opacity inline-flex items-center gap-1.5"
+                     <button
+                        type="button"
+                        onClick={() => setShowConfirm(true)}
+                        className="px-3 py-1.5 rounded-lg border border-error/30 text-error text-xs font-semibold tracking-wider uppercase hover:bg-error/10 transition-colors inline-flex items-center gap-1.5"
                      >
-                        Open
-                        <ExternalLink className="w-3 h-3" strokeWidth={2} />
-                     </a>
+                        <Unplug className="w-3 h-3" strokeWidth={2} />
+                        Disconnect
+                     </button>
                   </>
                ) : !integration.available ? (
                   <button
@@ -73,17 +98,58 @@ export default function IntegrationCard({ integration }: { integration: Integrat
                ) : (
                   <button
                      type="button"
-                     className="btn-primary px-3 py-1.5 rounded-lg text-on-primary-container text-xs font-semibold tracking-wider uppercase hover:opacity-90 transition-opacity inline-flex items-center gap-1.5"
+                     disabled={connecting}
+                     className="btn-primary px-3 py-1.5 rounded-lg text-on-primary-container text-xs font-semibold tracking-wider uppercase hover:opacity-90 transition-opacity inline-flex items-center gap-1.5 disabled:opacity-50"
                      onClick={async () => {
-                        await IntegrationService.connect(integration.slug);
+                        setConnecting(true);
+                        try {
+                           await IntegrationService.connect(integration.slug);
+                        } finally {
+                           setConnecting(false);
+                        }
                      }}
                   >
-                     <Plus className="w-3 h-3" strokeWidth={2.5} />
-                     Connect
+                     {connecting ? (
+                        <Loader2 className="w-3 h-3 animate-spin" strokeWidth={2.5} />
+                     ) : (
+                        <Plus className="w-3 h-3" strokeWidth={2.5} />
+                     )}
+                     {connecting ? 'Connecting…' : 'Connect'}
                   </button>
                )}
             </div>
          </div>
+
+         {/* Disconnect confirmation overlay */}
+         {showConfirm && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+               <div className="bg-surface-container rounded-2xl border border-outline-variant/15 p-6 w-full max-w-sm mx-4 flex flex-col gap-4">
+                  <div>
+                     <h3 className="text-base font-semibold text-on-surface">Disconnect {integration.name}?</h3>
+                     <p className="text-sm text-on-surface-variant mt-1">
+                        Your QuickBooks connection will be removed. You can reconnect at any time.
+                     </p>
+                  </div>
+                  <div className="flex items-center justify-end gap-3">
+                     <button
+                        type="button"
+                        onClick={() => setShowConfirm(false)}
+                        className="px-4 py-2 rounded-lg border border-outline-variant/20 text-on-surface text-xs font-semibold tracking-wider uppercase hover:border-primary/40 transition-colors"
+                     >
+                        Cancel
+                     </button>
+                     <button
+                        type="button"
+                        onClick={handleDisconnect}
+                        disabled={disconnecting}
+                        className="px-4 py-2 rounded-lg bg-error text-on-error text-xs font-semibold tracking-wider uppercase hover:opacity-90 transition-opacity disabled:opacity-50"
+                     >
+                        {disconnecting ? 'Disconnecting…' : 'Disconnect'}
+                     </button>
+                  </div>
+               </div>
+            </div>
+         )}
       </article>
    );
 }

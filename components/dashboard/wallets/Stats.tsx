@@ -7,7 +7,7 @@ export default function Stats() {
    const { monitoring, paused, wallets, chainsCovered } = useWalletStore();
    const monitoringLenth = monitoring.length;
    const pausedLenth = paused.length;
-   const totalTx = wallets.reduce((acc, w) => acc + (w.transactions30d ?? 0), 0);
+   const totalTx = wallets.reduce((acc, w) => acc + (w.transactionCount30d ?? 0), 0);
    return (
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
          <div className="bg-glass rounded-xl p-5 glow-top border border-outline-variant/10">

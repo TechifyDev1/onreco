@@ -2,13 +2,8 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import {
   ArrowLeft,
-  ArrowRight,
   Check,
-  Cpu,
-  GitMerge,
-  Mail,
   Users,
-  Wallet,
 } from 'lucide-react'
 
 import NavBar from '@/components/auth/NavBar'
@@ -155,46 +150,6 @@ export default function LoginPage() {
               </ul>
 
               <LoginForm />
-
-              {/* Divider */}
-              <div className="relative my-8">
-                <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-outline-variant/10" />
-                </div>
-                <div className="relative flex justify-center text-[10px] uppercase">
-                  <span className="bg-surface px-4 text-on-surface-variant/60 font-bold tracking-widest">
-                    Or connect via
-                  </span>
-                </div>
-              </div>
-
-              {/* Wallet Alternatives */}
-              <div className="grid grid-cols-2 gap-4">
-                <button
-                  type="button"
-                  className="flex items-center justify-center gap-3 px-4 py-3 rounded-lg border border-outline-variant/20 bg-surface-container-high hover:bg-surface-variant transition-colors group"
-                >
-                  <GitMerge
-                    className="w-5 h-5 text-secondary group-hover:scale-110 transition-transform"
-                    strokeWidth={2}
-                  />
-                  <span className="text-xs font-semibold tracking-wider uppercase text-on-surface">
-                    MetaMask
-                  </span>
-                </button>
-                <button
-                  type="button"
-                  className="flex items-center justify-center gap-3 px-4 py-3 rounded-lg border border-outline-variant/20 bg-surface-container-high hover:bg-surface-variant transition-colors group"
-                >
-                  <Cpu
-                    className="w-5 h-5 text-on-surface-variant group-hover:scale-110 transition-transform"
-                    strokeWidth={2}
-                  />
-                  <span className="text-xs font-semibold tracking-wider uppercase text-on-surface">
-                    Ledger
-                  </span>
-                </button>
-              </div>
 
               <p className="mt-8 text-center text-sm leading-5 text-on-surface-variant/60">
                 By signing in, you agree to our{' '}

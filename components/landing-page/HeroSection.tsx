@@ -43,10 +43,10 @@ export default function HeroSection() {
 
           <div className="flex flex-col sm:flex-row gap-4 pt-4">
             <Link
-              href="/waitlist"
+              href="/signup"
               className="btn-primary text-on-primary-container text-base font-medium px-6 py-3 rounded-lg hover:opacity-90 transition-opacity text-center cursor-pointer"
             >
-              Join the Waitlist
+              Get Started
             </Link>
             <ComingSoonButton
               message="Demo video will be available soon!"

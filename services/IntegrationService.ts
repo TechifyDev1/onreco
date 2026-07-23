@@ -18,6 +18,10 @@ export default class IntegrationService {
       const url = connectResponse.data.authorizationUrl;
       redirect(url);
    }
+
+   static async disconnect(id: string) {
+      await ApiClient.delete(`${this.integrationbasePath}/${id}/disconnect`);
+   }
 }
 
 interface ConnectState {

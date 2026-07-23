@@ -2,7 +2,7 @@
 import { handleLogin } from '@/app/actions/auth'
 import { useToastStore } from '@/providers/toast-provider'
 import { useUserProfileStore } from '@/providers/user-profile-store'
-import { ArrowRight, Link, Mail, Wallet } from 'lucide-react'
+import { ArrowRight, Mail } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useActionState, useEffect } from 'react'
 
@@ -53,20 +53,12 @@ export default function LoginForm() {
       </div>
 
       <div>
-        <div className="flex justify-between items-center mb-2">
-          <label
-            htmlFor="password"
-            className="text-xs font-semibold tracking-wider uppercase text-on-surface-variant"
-          >
-            Password
-          </label>
-          <Link
-            href="#"
-            className="text-xs font-semibold tracking-wider uppercase text-primary hover:underline"
-          >
-            Forgot Password?
-          </Link>
-        </div>
+        <label
+          htmlFor="password"
+          className="block text-xs font-semibold tracking-wider uppercase text-on-surface-variant mb-2"
+        >
+          Password
+        </label>
         <div className="relative">
           <input
             id="password"
@@ -77,13 +69,10 @@ export default function LoginForm() {
             placeholder="*******"
             className="w-full bg-surface-container-low border border-outline-variant/20 rounded-lg px-4 py-3 pr-12 text-on-surface placeholder:text-on-surface-variant/40 focus:ring-2 focus:ring-primary-container focus:border-primary outline-none transition-all text-sm"
           />
-          <button
-            type="button"
-            aria-label="Toggle password visibility"
-            className="absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant/40 hover:text-on-surface"
-          >
-            <Wallet className="w-5 h-5" strokeWidth={1.75} />
-          </button>
+          <Mail
+            className="absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant/40 w-5 h-5"
+            strokeWidth={1.75}
+          />
         </div>
       </div>
 

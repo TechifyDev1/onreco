@@ -3,8 +3,10 @@
 import { useEffect, useState } from 'react';
 import { Loader2, X } from 'lucide-react';
 import { RULE_DIRECTIONS, type CreateRuleRequest, type Rule, type RuleDirection } from '../_data/rules';
-import AccountService, { type QuickBooksAccount } from '@/services/AccountService';
-import { ApiError } from '@/services/ApiError';
+import WalletService from '@/services/WalletService';
+import type { Wallet } from '@/app/app/_data/wallets';
+import { useAccountStore } from '@/providers/account-store';
+import type { QuickBooksAccount } from '@/services/AccountService';
 
 type Props = {
   initial: Rule | null;
@@ -38,9 +40,9 @@ export default function RuleDialog({
   const [priority, setPriority] = useState<number>(initial?.priority ?? 0);
   const [active, setActive] = useState<boolean>(initial?.active ?? true);
   const [error, setError] = useState<string | null>(null);
-  const [offsetAccounts, setOffsetAccounts] = useState<QuickBooksAccount[]>([]);
-  const [accountsLoading, setAccountsLoading] = useState(true);
-  const [accountsError, setAccountsError] = useState<string | null>(null);
+  const offsetAccounts = useAccountStore((s) => s.offsetAccounts);
+  const [wallets, setWallets] = useState<Wallet[]>([]);
+  const [walletsLoading, setWalletsLoading] = useState(true);
 
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
@@ -53,26 +55,21 @@ export default function RuleDialog({
   useEffect(() => {
     let cancelled = false;
 
-    async function loadAccounts() {
-      setAccountsLoading(true);
-      setAccountsError(null);
+    async function loadWallets() {
+      setWalletsLoading(true);
       try {
-        const offsetList = await AccountService.getOffsetAccounts();
+        const walletList = await WalletService.getWallets();
         if (!cancelled) {
-          setOffsetAccounts(offsetList);
+          setWallets(walletList);
         }
-      } catch (err) {
-        if (!cancelled) {
-          setAccountsError(
-            err instanceof ApiError ? err.message : 'Failed to load QuickBooks accounts.'
-          );
-        }
+      } catch {
+        // Silently fail — wallet is optional
       } finally {
-        if (!cancelled) setAccountsLoading(false);
+        if (!cancelled) setWalletsLoading(false);
       }
     }
 
-    loadAccounts();
+    loadWallets();
     return () => {
       cancelled = true;
     };
@@ -156,17 +153,34 @@ export default function RuleDialog({
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <Field label="Wallet (optional)" error={fieldErrors?.walletId}>
-              <input
-                type="text"
+              <select
                 value={walletId}
                 onChange={(e) => setWalletId(e.target.value)}
-                placeholder="Wallet UUID"
                 className="input"
-                disabled={submitting}
-              />
-              <p className="text-[10px] text-on-surface-variant mt-1">
-                Leave empty to match any wallet. Wallet picker comes later.
-              </p>
+                disabled={submitting || walletsLoading || wallets.length === 0}
+              >
+                <option value="">
+                  {walletsLoading
+                    ? 'Loading wallets…'
+                    : wallets.length === 0
+                    ? 'No wallets connected'
+                    : 'Match any wallet'}
+                </option>
+                {wallets.map((w) => (
+                  <option key={w.id} value={w.id}>
+                    {w.label} ({w.chain})
+                  </option>
+                ))}
+              </select>
+              {wallets.length === 0 && !walletsLoading && (
+                <p className="text-[10px] text-on-surface-variant mt-1">
+                  You currently have no connected wallets.{' '}
+                  <a href="/app/wallets" className="text-primary underline">
+                    Connect a wallet
+                  </a>{' '}
+                  to use this option.
+                </p>
+              )}
             </Field>
 
             <Field label="Direction (optional)" error={fieldErrors?.direction}>
@@ -210,17 +224,10 @@ export default function RuleDialog({
             label="Categorize as"
             value={offsetAccountId}
             accounts={offsetAccounts}
-            loading={accountsLoading}
             error={fieldErrors?.offsetAccountId}
             disabled={submitting}
             onChange={setOffsetAccountId}
           />
-
-          {accountsError && (
-            <div className="rounded-lg border border-error/30 bg-error/10 px-3 py-2 text-xs text-error">
-              {accountsError}
-            </div>
-          )}
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <Field label="Priority" error={fieldErrors?.priority}>
@@ -314,7 +321,6 @@ function AccountSelect({
   label,
   value,
   accounts,
-  loading,
   error,
   disabled,
   onChange,
@@ -322,7 +328,6 @@ function AccountSelect({
   label: string;
   value: string;
   accounts: QuickBooksAccount[];
-  loading: boolean;
   error?: string;
   disabled: boolean;
   onChange: (value: string) => void;
@@ -336,10 +341,10 @@ function AccountSelect({
         onChange={(event) => onChange(event.target.value)}
         className="input bg-surface-container text-on-surface border-outline-variant/50"
         required
-        disabled={disabled || loading}
+        disabled={disabled}
       >
         <option className="bg-surface-container text-on-surface" value="">
-          {loading ? 'Loading QuickBooks accounts…' : 'Select an account'}
+          {accounts.length === 0 ? 'No accounts available' : 'Select an account'}
         </option>
         {value && !hasSelectedAccount && (
           <option className="bg-surface-container text-on-surface" value={value}>
