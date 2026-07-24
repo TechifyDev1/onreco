@@ -1,7 +1,7 @@
 import { ApiError } from './ApiError';
 
 export default class ApiClient {
-   private static readonly baseUrl: string = 'http://localhost:3000/api';
+   private static readonly baseUrl: string = '/api';
    private static isLoggingOut = false;
 
    private static readonly defaultOptions: RequestInit = {
