@@ -1,7 +1,19 @@
 import { ApiError } from './ApiError';
 
+const isServer = typeof window === 'undefined';
+
+const getBaseUrl = () => {
+   if (isServer) {
+      if (process.env.VERCEL_PROJECT_PRODUCTION_URL) {
+         return `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`;
+      }
+      return 'http://localhost:3000';
+   }
+   return '';
+};
+
 export default class ApiClient {
-   private static readonly baseUrl: string = '/api';
+   private static readonly baseUrl: string = getBaseUrl();
    private static isLoggingOut = false;
 
    private static readonly defaultOptions: RequestInit = {
@@ -33,7 +45,7 @@ export default class ApiClient {
       if (this.isLoggingOut) return;
       this.isLoggingOut = true;
       try {
-         await fetch(`${this.baseUrl}/auth/logout`, {
+         await fetch(`${this.baseUrl}/api/auth/logout`, {
             method: 'POST',
             headers: { 'X-Client-Type': 'web' },
             credentials: 'include',
@@ -49,7 +61,7 @@ export default class ApiClient {
          ...this.defaultOptions.headers,
          ...options.headers,
       });
-      if (typeof window === 'undefined') {
+      if (isServer) {
          try {
             const { cookies } = await import('next/headers');
             const cookieStore = await cookies();
@@ -59,7 +71,8 @@ export default class ApiClient {
             }
          } catch (error) {}
       }
-      const response = await fetch(`${this.baseUrl}${path}`, {
+      const url = isServer ? `${this.baseUrl}/api${path}` : `/api${path}`;
+      const response = await fetch(url, {
          ...this.defaultOptions,
          ...options,
          headers: requestHeaders,
