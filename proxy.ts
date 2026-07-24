@@ -1,5 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 
+const redactForLog = (value: string) =>
+   value
+      .replace(/"(password|accessToken|refreshToken|token)"\s*:\s*"[^"]*"/gi, '"$1":"[redacted]"')
+      .replace(/(Bearer\s+)[^\s",}]+/gi, '$1[redacted]')
+      .replace(/([\w.+-]+)@([\w.-]+\.[A-Za-z]{2,})/g, '[redacted-email]');
+
 export async function proxy(request: NextRequest) {
    const url = request.nextUrl;
    const path = url.pathname;
@@ -23,6 +29,24 @@ export async function proxy(request: NextRequest) {
       });
 
       const responseText = await authResponse.text();
+      let isValidJson = true;
+      try {
+         JSON.parse(responseText);
+      } catch {
+         isValidJson = false;
+      }
+
+      console.info('[Auth Proxy] Backend response', {
+         path,
+         method: request.method,
+         status: authResponse.status,
+         contentType: authResponse.headers.get('content-type'),
+         contentLength: authResponse.headers.get('content-length'),
+         contentEncoding: authResponse.headers.get('content-encoding'),
+         bodyLength: responseText.length,
+         isValidJson,
+         ...(isValidJson ? {} : { bodyPreview: redactForLog(responseText.slice(0, 500)) }),
+      });
 
       const nextResponse = new NextResponse(responseText, {
          status: authResponse.status,
