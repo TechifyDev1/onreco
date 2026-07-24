@@ -6,6 +6,13 @@ const redactForLog = (value: string) =>
       .replace(/(Bearer\s+)[^\s",}]+/gi, '$1[redacted]')
       .replace(/([\w.+-]+)@([\w.-]+\.[A-Za-z]{2,})/g, '[redacted-email]');
 
+const getForwardedHeaders = (headers: Headers) => {
+   const forwardedHeaders = new Headers(headers);
+   forwardedHeaders.delete('content-encoding');
+   forwardedHeaders.delete('content-length');
+   return forwardedHeaders;
+};
+
 export async function proxy(request: NextRequest) {
    const url = request.nextUrl;
    const path = url.pathname;
@@ -50,7 +57,7 @@ export async function proxy(request: NextRequest) {
 
       const nextResponse = new NextResponse(responseText, {
          status: authResponse.status,
-         headers: new Headers(authResponse.headers),
+         headers: getForwardedHeaders(authResponse.headers),
       });
 
       // Clear auth cookies on logout
@@ -221,7 +228,7 @@ export async function proxy(request: NextRequest) {
 
       const finalResponse = new NextResponse(response.body, {
          status: response.status,
-         headers: new Headers(response.headers),
+         headers: getForwardedHeaders(response.headers),
       });
 
       // Persist rotated tokens to browser cookies
