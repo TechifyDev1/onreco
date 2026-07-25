@@ -12,20 +12,6 @@ const getBaseUrl = () => {
    return '';
 };
 
-const redactForLog = (value: string) =>
-   value
-      .replace(/"(password|accessToken|refreshToken|token)"\s*:\s*"[^"]*"/gi, '"$1":"[redacted]"')
-      .replace(/(Bearer\s+)[^\s",}]+/gi, '$1[redacted]')
-      .replace(/([\w.+-]+)@([\w.-]+\.[A-Za-z]{2,})/g, '[redacted-email]');
-
-const getResponseDiagnostics = (response: Response, body: string) => ({
-   contentType: response.headers.get('content-type'),
-   contentLength: response.headers.get('content-length'),
-   contentEncoding: response.headers.get('content-encoding'),
-   bodyLength: body.length,
-   bodyPreview: redactForLog(body.slice(0, 500)),
-});
-
 export default class ApiClient {
    private static readonly baseUrl: string = getBaseUrl();
    private static isLoggingOut = false;
@@ -112,16 +98,10 @@ export default class ApiClient {
       const contentType = response.headers.get('content-type') || '';
       let data: T;
       if (contentType.includes('application/json')) {
-         const responseBody = await response.text();
          try {
-            data = JSON.parse(responseBody) as T;
+            data = await response.json();
          } catch (parseError) {
-            console.error(`[ApiClient] Failed to parse success response JSON`, {
-               path,
-               url,
-               status: response.status,
-               ...getResponseDiagnostics(response, responseBody),
-            });
+            console.error(`[ApiClient] Failed to parse success response JSON from ${path}. Status: ${response.status}`);
             throw new Error(`Failed to parse success JSON from ${path}`);
          }
       } else {
