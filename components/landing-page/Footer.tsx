@@ -1,5 +1,4 @@
 import { Mail } from 'lucide-react'
-import ComingSoonLink from '@/components/shared/ComingSoonLink'
 import Link from 'next/link'
 
 export default function Footer() {
@@ -14,7 +13,7 @@ export default function Footer() {
               Onreco
             </div>
             <p className="text-sm text-on-surface-variant max-w-sm leading-5">
-              The stablecoin accounting platform for QuickBooks and Xero.
+              The stablecoin accounting platform for QuickBooks.
               Automate bookkeeping, reconciliation, and journal entries for USDT
               and USDC.
             </p>
@@ -58,14 +57,6 @@ export default function Footer() {
                   Blog
                 </Link>
               </li>
-              <li>
-                <ComingSoonLink
-                  message="Pricing plans will be available soon!"
-                  className="text-sm text-on-surface-variant hover:text-primary transition-colors"
-                >
-                  Pricing
-                </ComingSoonLink>
-              </li>
             </ul>
           </div>
 
@@ -75,31 +66,22 @@ export default function Footer() {
               Company
             </h4>
             <ul className="flex flex-col gap-3">
-              {[
-                { label: 'Documentation', href: null },
-                { label: 'Contact Sales', href: null },
-                { label: 'Privacy Policy', href: '/privacy' },
-                { label: 'Terms of Service', href: null },
-                { label: 'EULA', href: '/eula' },
-              ].map((item) => (
-                <li key={item.label}>
-                  {item.href ? (
-                    <Link
-                      href={item.href}
-                      className="text-sm text-on-surface-variant hover:text-primary transition-colors"
-                    >
-                      {item.label}
-                    </Link>
-                  ) : (
-                    <ComingSoonLink
-                      message={`${item.label} will be available soon!`}
-                      className="text-sm text-on-surface-variant hover:text-primary transition-colors"
-                    >
-                      {item.label}
-                    </ComingSoonLink>
-                  )}
-                </li>
-              ))}
+              <li>
+                <Link
+                  href="/privacy"
+                  className="text-sm text-on-surface-variant hover:text-primary transition-colors"
+                >
+                  Privacy Policy
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/eula"
+                  className="text-sm text-on-surface-variant hover:text-primary transition-colors"
+                >
+                  Terms of Service
+                </Link>
+              </li>
             </ul>
           </div>
         </div>

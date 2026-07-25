@@ -46,7 +46,14 @@ export async function proxy(request: NextRequest) {
    }
 
    // Allow static authentication page layouts to render locally
-   if (path === '/login' || path === '/register' || path.startsWith('/verify-email')) {
+   if (path === '/login' || path === '/register') {
+      const refreshToken = request.cookies.get('refreshToken')?.value;
+      if (refreshToken) {
+         return NextResponse.redirect(new URL('/app', request.url));
+      }
+      return NextResponse.next();
+   }
+   if (path.startsWith('/verify-email')) {
       return NextResponse.next();
    }
 

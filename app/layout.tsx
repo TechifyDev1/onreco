@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Inter, JetBrains_Mono } from 'next/font/google'
 import './globals.css'
 import { ReactNode } from 'react'
+import Script from 'next/script'
 import Toast from '@/components/shared/Toast'
 
 const inter = Inter({
@@ -164,6 +165,15 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       >
         <Toast />
         {children}
+        <Script
+          src="https://myhappr.com/widget.js"
+          data-username="techifydevx"
+          data-color="#2563eb"
+          data-text-color="#FFFFFF"
+          data-radius="9999px"
+          data-text="Make us smile"
+          strategy="lazyOnload"
+        />
       </body>
     </html>
   )
