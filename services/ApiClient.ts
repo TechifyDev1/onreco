@@ -44,6 +44,10 @@ export default class ApiClient {
    private static async handleSessionExpired() {
       if (this.isLoggingOut) return;
       this.isLoggingOut = true;
+
+      // Reset the guard after 5s so subsequent sessions aren't stuck
+      setTimeout(() => { this.isLoggingOut = false; }, 5000);
+
       try {
          await fetch(`${this.baseUrl}/api/auth/logout`, {
             method: 'POST',
@@ -78,6 +82,8 @@ export default class ApiClient {
          headers: requestHeaders,
       });
 
+      // Only trigger logout on the client — the proxy already handled refresh+retry
+      // so a 401 here means the session is truly expired
       if (response.status === 401 && typeof window !== 'undefined') {
          this.handleSessionExpired();
          throw new ApiError('Unauthorized', 'Session expired', new Date().toISOString());

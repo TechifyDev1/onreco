@@ -7,6 +7,84 @@ const getForwardedHeaders = (headers: Headers) => {
    return forwardedHeaders;
 };
 
+/**
+ * Parse a Set-Cookie header value into its cookie value (handles `=` in JWT padding).
+ */
+function extractCookieValue(setCookieHeader: string, name: string): string {
+   const prefix = `${name}=`;
+   const match = setCookieHeader.split(/;\s*/).find((part) => part.startsWith(prefix));
+   return match ? match.slice(prefix.length) : '';
+}
+
+// Refresh mutex — prevents concurrent refresh calls from racing
+let refreshPromise: Promise<{ accessToken: string; refreshToken: string } | null> | null = null;
+
+function doRefresh(backendUrl: string, refreshToken: string): Promise<{ accessToken: string; refreshToken: string } | null> {
+   if (!refreshPromise) {
+      refreshPromise = (async () => {
+         try {
+            const refreshResponse = await fetch(`${backendUrl}/api/auth/refresh`, {
+               method: 'POST',
+               headers: {
+                  'Content-Type': 'application/json',
+                  Cookie: `refreshToken=${refreshToken}`,
+                  'X-Client-Type': 'web',
+               },
+            });
+
+            if (!refreshResponse.ok) return null;
+
+            const cookiesArray = refreshResponse.headers.getSetCookie();
+            if (!cookiesArray || cookiesArray.length === 0) return null;
+
+            let newAccessToken = '';
+            let newRefreshToken = '';
+
+            for (const c of cookiesArray) {
+               const trimmed = c.trim();
+               if (trimmed.startsWith('accessToken=')) {
+                  newAccessToken = extractCookieValue(trimmed, 'accessToken');
+               } else if (trimmed.startsWith('refreshToken=')) {
+                  newRefreshToken = extractCookieValue(trimmed, 'refreshToken');
+               }
+            }
+
+            if (!newAccessToken && !newRefreshToken) return null;
+            return { accessToken: newAccessToken, refreshToken: newRefreshToken };
+         } catch {
+            return null;
+         } finally {
+            // Release mutex after a short debounce to batch rapid-fire calls
+            setTimeout(() => {
+               refreshPromise = null;
+            }, 500);
+         }
+      })();
+   }
+   return refreshPromise;
+}
+
+function setTokenCookies(response: NextResponse, tokens: { accessToken: string; refreshToken: string }, isProd: boolean) {
+   if (tokens.refreshToken) {
+      response.cookies.set('refreshToken', tokens.refreshToken, {
+         httpOnly: true,
+         secure: isProd,
+         sameSite: 'lax',
+         path: '/',
+         maxAge: 60 * 60 * 24 * 7,
+      });
+   }
+   if (tokens.accessToken) {
+      response.cookies.set('accessToken', tokens.accessToken, {
+         httpOnly: true,
+         secure: isProd,
+         sameSite: 'lax',
+         path: '/',
+         maxAge: 15 * 60,
+      });
+   }
+}
+
 export async function proxy(request: NextRequest) {
    const url = request.nextUrl;
    const path = url.pathname;
@@ -72,72 +150,28 @@ export async function proxy(request: NextRequest) {
 
       const shouldRefresh = !accessToken;
       if (shouldRefresh) {
-         try {
-            const refreshResponse = await fetch(`${backendUrl}/api/auth/refresh`, {
-               method: 'POST',
-               headers: {
-                  'Content-Type': 'application/json',
-                  Cookie: `refreshToken=${refreshToken}`,
-                  'X-Client-Type': 'web',
-               },
-            });
+         const tokens = await doRefresh(backendUrl, refreshToken);
 
-            if (refreshResponse.ok) {
-               const cookiesArray = refreshResponse.headers.getSetCookie();
-               let newAccessToken = '';
-               let newRefreshToken = '';
-
-               if (cookiesArray && cookiesArray.length > 0) {
-                  const refreshStr = cookiesArray.find((c) => c.trim().startsWith('refreshToken='));
-                  const accessStr = cookiesArray.find((c) => c.trim().startsWith('accessToken='));
-
-                  if (refreshStr) newRefreshToken = refreshStr.split(';')[0].split('=')[1];
-                  if (accessStr) newAccessToken = accessStr.split(';')[0].split('=')[1];
-               }
-
-               const requestHeaders = new Headers(request.headers);
-               const cookieStrings: string[] = [];
-               if (newAccessToken) cookieStrings.push(`accessToken=${newAccessToken}`);
-               if (newRefreshToken) cookieStrings.push(`refreshToken=${newRefreshToken}`);
-               if (cookieStrings.length > 0) {
-                  requestHeaders.set('Cookie', cookieStrings.join('; '));
-               }
-
-               const finalResponse = NextResponse.next({
-                  request: {
-                     headers: requestHeaders,
-                  },
-               });
-
-               if (newRefreshToken) {
-                  finalResponse.cookies.set('refreshToken', newRefreshToken, {
-                     httpOnly: true,
-                     secure: isProd,
-                     sameSite: 'lax',
-                     path: '/',
-                     maxAge: 60 * 60 * 24 * 7,
-                  });
-               }
-
-               if (newAccessToken) {
-                  finalResponse.cookies.set('accessToken', newAccessToken, {
-                     httpOnly: true,
-                     secure: isProd,
-                     sameSite: 'lax',
-                     path: '/',
-                     maxAge: 15 * 60,
-                  });
-               }
-
-               return finalResponse;
-            } else {
-               const errorResponse = NextResponse.redirect(new URL('/login', request.url));
-               errorResponse.cookies.delete('refreshToken');
-               errorResponse.cookies.delete('accessToken');
-               return errorResponse;
+         if (tokens) {
+            const requestHeaders = new Headers(request.headers);
+            const cookieStrings: string[] = [];
+            if (tokens.accessToken) cookieStrings.push(`accessToken=${tokens.accessToken}`);
+            if (tokens.refreshToken) cookieStrings.push(`refreshToken=${tokens.refreshToken}`);
+            if (cookieStrings.length > 0) {
+               requestHeaders.set('Cookie', cookieStrings.join('; '));
             }
-         } catch (error) {
-            console.error(`[Proxy] Error during preemptive token refresh:`, error);
+
+            const finalResponse = NextResponse.next({
+               request: { headers: requestHeaders },
+            });
+            setTokenCookies(finalResponse, tokens, isProd);
+            return finalResponse;
+         } else {
+            // Refresh failed — redirect to login and clear session
+            const errorResponse = NextResponse.redirect(new URL('/login', request.url));
+            errorResponse.cookies.delete('refreshToken');
+            errorResponse.cookies.delete('accessToken');
+            return errorResponse;
          }
       }
 
@@ -168,45 +202,32 @@ export async function proxy(request: NextRequest) {
 
       // 401 → try token refresh + retry once
       if (response.status === 401 && refreshToken && !path.includes('/auth/refresh')) {
-         try {
-            const refreshResponse = await fetch(`${backendUrl}/api/auth/refresh`, {
-               method: 'POST',
-               headers: {
-                  'Content-Type': 'application/json',
-                  Cookie: `refreshToken=${refreshToken}`,
-                  'X-Client-Type': 'web',
-               },
+         const tokens = await doRefresh(backendUrl, refreshToken);
+
+         if (tokens && tokens.accessToken) {
+            const retryHeaders = new Headers(request.headers);
+            retryHeaders.set('Authorization', `Bearer ${tokens.accessToken}`);
+
+            const retryCookies: string[] = [];
+            retryCookies.push(`accessToken=${tokens.accessToken}`);
+            if (tokens.refreshToken) retryCookies.push(`refreshToken=${tokens.refreshToken}`);
+            retryHeaders.set('Cookie', retryCookies.join('; '));
+
+            response = await fetch(targetUrl, {
+               method: request.method,
+               headers: retryHeaders,
+               body: body,
             });
 
-            if (refreshResponse.ok) {
-               const cookiesArray = refreshResponse.headers.getSetCookie();
-               let newAccessToken = '';
-               let newRefreshToken = '';
-
-               if (cookiesArray && cookiesArray.length > 0) {
-                  const refreshStr = cookiesArray.find((c) => c.trim().startsWith('refreshToken='));
-                  const accessStr = cookiesArray.find((c) => c.trim().startsWith('accessToken='));
-                  if (refreshStr) newRefreshToken = refreshStr.split(';')[0].split('=')[1];
-                  if (accessStr) newAccessToken = accessStr.split(';')[0].split('=')[1];
-               }
-
-               const retryHeaders = new Headers(request.headers);
-               if (newAccessToken) retryHeaders.set('Authorization', `Bearer ${newAccessToken}`);
-
-               const retryCookies: string[] = [];
-               if (newAccessToken) retryCookies.push(`accessToken=${newAccessToken}`);
-               if (newRefreshToken) retryCookies.push(`refreshToken=${newRefreshToken}`);
-               if (retryCookies.length > 0) retryHeaders.set('Cookie', retryCookies.join('; '));
-
-               response = await fetch(targetUrl, {
-                  method: request.method,
-                  headers: retryHeaders,
-                  body: body,
-               });
-            }
-         } catch (error) {
-            console.error('[Proxy] Token refresh failed:', error);
+            // Persist the new tokens to browser cookies regardless of retry outcome
+            const finalResponse = new NextResponse(response.body, {
+               status: response.status,
+               headers: getForwardedHeaders(response.headers),
+            });
+            setTokenCookies(finalResponse, tokens, isProd);
+            return finalResponse;
          }
+         // Refresh failed — return the original 401
       }
 
       const finalResponse = new NextResponse(response.body, {
@@ -214,31 +235,22 @@ export async function proxy(request: NextRequest) {
          headers: getForwardedHeaders(response.headers),
       });
 
-      // Persist rotated tokens to browser cookies
+      // Persist rotated tokens from normal 200 responses
       if (response.status === 200 && response.headers.getSetCookie) {
          const cookiesArray = response.headers.getSetCookie();
          if (cookiesArray && cookiesArray.length > 0) {
-            const refreshStr = cookiesArray.find((c) => c.trim().startsWith('refreshToken='));
-            const accessStr = cookiesArray.find((c) => c.trim().startsWith('accessToken='));
-            if (refreshStr) {
-               const val = refreshStr.split(';')[0].split('=')[1];
-               finalResponse.cookies.set('refreshToken', val, {
-                  httpOnly: true,
-                  secure: isProd,
-                  sameSite: 'lax',
-                  path: '/',
-                  maxAge: 60 * 60 * 24 * 7,
-               });
+            let newAccessToken = '';
+            let newRefreshToken = '';
+            for (const c of cookiesArray) {
+               const trimmed = c.trim();
+               if (trimmed.startsWith('accessToken=')) {
+                  newAccessToken = extractCookieValue(trimmed, 'accessToken');
+               } else if (trimmed.startsWith('refreshToken=')) {
+                  newRefreshToken = extractCookieValue(trimmed, 'refreshToken');
+               }
             }
-            if (accessStr) {
-               const val = accessStr.split(';')[0].split('=')[1];
-               finalResponse.cookies.set('accessToken', val, {
-                  httpOnly: true,
-                  secure: isProd,
-                  sameSite: 'lax',
-                  path: '/',
-                  maxAge: 15 * 60,
-               });
+            if (newAccessToken || newRefreshToken) {
+               setTokenCookies(finalResponse, { accessToken: newAccessToken, refreshToken: newRefreshToken }, isProd);
             }
          }
       }
