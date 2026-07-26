@@ -37,7 +37,7 @@ export default async function Page() {
             </p>
           </div>
           <a
-            href="#"
+            href="mailto:techifydev1@gmail.com?subject=Integration%20Request"
             className="inline-flex items-center gap-1.5 text-xs font-semibold tracking-wider uppercase text-on-surface-variant hover:text-primary transition-colors"
           >
             Request an integration

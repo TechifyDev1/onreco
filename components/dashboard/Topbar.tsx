@@ -1,4 +1,4 @@
-import { Bell, Search } from "lucide-react";
+import { Search } from "lucide-react";
 
 import AccountMenu from "./AccountMenu";
 
@@ -24,16 +24,6 @@ export default function Topbar() {
                 <div className="hidden md:block md:ml-auto" />
 
                 <div className="flex items-center gap-2 md:gap-3">
-                    {/* Notification bell */}
-                    <button
-                        type="button"
-                        aria-label="Notifications"
-                        className="w-9 h-9 rounded-lg flex items-center justify-center text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors relative"
-                    >
-                        <Bell className="w-[18px] h-[18px]" strokeWidth={1.75} />
-                        <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-secondary" />
-                    </button>
-
                     <AccountMenu />
                 </div>
             </div>
