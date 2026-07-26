@@ -45,10 +45,10 @@ export default function Home() {
         <FeatureGrid />
         <HowItWorks />
         <TrustSection />
-        <section className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 py-16">
-          <div className="text-center mb-8">
+        <section className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 pt-10 pb-4">
+          <div className="text-center mb-4">
             <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-on-surface">Support Onreco</h2>
-            <p className="mt-2 text-on-surface-variant">If Onreco has saved you time, consider buying us a coffee.</p>
+            <p className="mt-1 text-on-surface-variant">If Onreco has saved you time, consider sending us a smile.</p>
           </div>
           <iframe
             src="https://myhappr.com/embed/onreco"

@@ -1,6 +1,5 @@
 import Link from 'next/link'
 import UseFluxButton from './UseFluxButton'
-import ComingSoonLink from '@/components/shared/ComingSoonLink'
 
 export default function NavBar() {
   return (
@@ -37,12 +36,14 @@ export default function NavBar() {
           >
             How it Works
           </Link>
-          <ComingSoonLink
-            message="Pricing plans will be available soon!"
+          <a
+            href="https://myhappr.com/onreco"
+            target="_blank"
+            rel="noopener noreferrer"
             className="text-xs font-medium tracking-widest uppercase text-on-surface-variant hover:text-primary transition-colors duration-200"
           >
-            Pricing
-          </ComingSoonLink>
+            Support us
+          </a>
         </div>
 
         {/* Right side navigation actions (Blog + CTA) */}

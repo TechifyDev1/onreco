@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function CTASection() {
   return (
-    <section className="px-4 md:px-8 py-24 bg-surface relative overflow-hidden">
+    <section className="px-4 md:px-8 py-16 bg-surface relative overflow-hidden">
       {/* Radial glow */}
       <div
         className="absolute inset-0 -z-10 pointer-events-none"
