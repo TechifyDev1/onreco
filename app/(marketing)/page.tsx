@@ -45,6 +45,21 @@ export default function Home() {
         <FeatureGrid />
         <HowItWorks />
         <TrustSection />
+        <section className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 py-16">
+          <div className="text-center mb-8">
+            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-on-surface">Support Onreco</h2>
+            <p className="mt-2 text-on-surface-variant">If Onreco has saved you time, consider buying us a coffee.</p>
+          </div>
+          <iframe
+            src="https://myhappr.com/embed/onreco"
+            width="100%"
+            height="600"
+            frameBorder="0"
+            scrolling="no"
+            style={{ borderRadius: '12px' }}
+            title="Support Onreco"
+          />
+        </section>
         <CTASection />
       </main>
       <Footer />

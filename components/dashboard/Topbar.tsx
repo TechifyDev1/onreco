@@ -1,28 +1,20 @@
-import { Search } from "lucide-react";
+import { Heart } from "lucide-react";
 
 import AccountMenu from "./AccountMenu";
 
 export default function Topbar() {
     return (
         <header className="sticky top-0 z-30 h-16 border-b border-outline-variant/10 bg-surface-container-lowest/80 backdrop-blur-md">
-            <div className="h-full px-4 md:px-8 flex items-center gap-6">
-                {/* Search */}
-                <div className="flex-1 max-w-xl relative">
-                    <Search
-                        className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-on-surface-variant"
-                        strokeWidth={1.75}
-                    />
-                    <input
-                        type="search"
-                        placeholder="Search transactions, wallets, invoices..."
-                        aria-label="Search"
-                        className="w-full pl-10 pr-3 py-2 rounded-lg bg-surface-container-low border border-outline-variant/20 text-sm text-on-surface placeholder:text-on-surface-variant/50 focus:border-primary-container focus:ring-1 focus:ring-primary-container outline-none transition-all"
-                    />
-                </div>
-
-                {/* Spacer */}
-                <div className="hidden md:block md:ml-auto" />
-
+            <div className="h-full px-4 md:px-8 flex items-center justify-end gap-3">
+                <a
+                    href="https://myhappr.com/onreco"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-outline-variant/20 text-on-surface text-xs font-semibold tracking-wider uppercase hover:border-primary/40 transition-colors"
+                >
+                    <Heart className="w-3.5 h-3.5" strokeWidth={2} />
+                    Support us
+                </a>
                 <div className="flex items-center gap-2 md:gap-3">
                     <AccountMenu />
                 </div>
