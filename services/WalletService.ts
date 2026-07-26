@@ -13,4 +13,8 @@ export default class WalletService {
       const response = await ApiClient.post<Wallet, AddWalletRequest>(`${this.walletBasePath}/connect`, request);
       return response.data;
    }
+
+   static async deleteWallet(walletId: string): Promise<void> {
+      await ApiClient.delete(`${this.walletBasePath}/${walletId}`);
+   }
 }

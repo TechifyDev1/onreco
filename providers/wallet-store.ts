@@ -10,6 +10,7 @@ interface WalletStoreState {
    chainsCovered: number;
    setWallets: (wallets: Wallet[]) => void;
    addWallet: (wallet: Wallet) => void;
+   removeWallet: (walletId: string) => void;
 }
 
 export const useWalletStore = create<WalletStoreState>((set) => ({
@@ -29,6 +30,20 @@ export const useWalletStore = create<WalletStoreState>((set) => ({
    addWallet: (wallet) =>
       set((state) => {
          const next = [wallet, ...state.wallets];
+         const monitoring = next.filter((w) => w.active);
+         const paused = next.filter((w) => !w.active);
+         const chainsCovered = new Set(monitoring.map((w) => w.chain)).size;
+         return {
+            wallets: next,
+            monitoring,
+            paused,
+            chainsCovered,
+         };
+      }),
+
+   removeWallet: (walletId) =>
+      set((state) => {
+         const next = state.wallets.filter((w) => w.id !== walletId);
          const monitoring = next.filter((w) => w.active);
          const paused = next.filter((w) => !w.active);
          const chainsCovered = new Set(monitoring.map((w) => w.chain)).size;
