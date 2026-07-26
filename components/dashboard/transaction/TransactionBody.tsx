@@ -5,7 +5,7 @@ import { ArrowDownLeft, ArrowUpRight, Copy, Receipt } from 'lucide-react';
 import { useToastStore } from '@/providers/toast-provider';
 
 export default function TransactionBody() {
-   const { transactions } = useTransactionStore();
+   const { transactions, filteredTransactions } = useTransactionStore();
    const { show } = useToastStore();
    if (transactions.length === 0) {
       return (
@@ -30,7 +30,24 @@ export default function TransactionBody() {
          </tr>
       );
    }
-   return transactions.map((tx) => {
+   if (filteredTransactions.length === 0) {
+      return (
+         <tr>
+            <td colSpan={9} className="px-5 py-20 text-center">
+               <div className="flex flex-col items-center justify-center gap-3 max-w-sm mx-auto">
+                  <div className="w-12 h-12 rounded-xl bg-surface-container-high flex items-center justify-center text-on-surface-variant">
+                     <Receipt className="w-6 h-6" strokeWidth={1.75} />
+                  </div>
+                  <div>
+                     <h3 className="text-base font-semibold text-on-surface">No matching transactions</h3>
+                     <p className="text-xs text-on-surface-variant mt-1.5 leading-relaxed">No transactions match the selected filter. Try a different filter.</p>
+                  </div>
+               </div>
+            </td>
+         </tr>
+      );
+   }
+   return filteredTransactions.map((tx) => {
       const isIn = tx.direction === 'RECEIVED';
       return (
          <tr key={tx.id} className="border-t border-outline-variant/10 hover:bg-surface-container-low/50 transition-colors">
