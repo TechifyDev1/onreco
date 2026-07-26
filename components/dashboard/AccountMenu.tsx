@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
-import { Bell, ChevronDown, CreditCard, LogOut, Settings as SettingsIcon, User as UserIcon } from 'lucide-react';
+import { ChevronDown, LogOut, User as UserIcon } from 'lucide-react';
 
 import { useUserProfileStore } from '@/providers/user-profile-store';
 import LogoutDialog from './LogoutDialog';
@@ -90,9 +90,6 @@ export default function AccountMenu() {
                   <div className="py-1">
                      {[
                         { href: '/app/settings#profile', label: 'Your Profile', icon: UserIcon },
-                        { href: '/app/settings', label: 'Team Settings', icon: SettingsIcon },
-                        { href: '/app/settings#billing', label: 'Billing', icon: CreditCard },
-                        { href: '/app/settings#notifications', label: 'Notifications', icon: Bell },
                      ].map(({ href, label, icon: Icon }) => (
                         <Link
                            key={href}
