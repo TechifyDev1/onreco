@@ -13,6 +13,10 @@ export type Transaction = {
    category: string;
    counterparty: string;
    status: SyncStatus;
+   gasAmount: string | null;
+   gasCurrency: string | null;
+   convertedAmount: string | null;
+   convertedCurrency: string | null;
 };
 
 export const TX_STATUS_STYLES: Record<SyncStatus, string> = {

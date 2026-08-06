@@ -63,7 +63,7 @@ export default function Sidebar() {
                   <LogOut className="w-4.5 h-4.5" strokeWidth={1.75} />
                   <span className="font-medium">Sign Out</span>
                </button>
-               <div className="mt-3 px-3 text-[10px] font-semibold tracking-[0.08em] uppercase text-outline">v1.0.0 &middot; Onreco</div>
+               <div className="mt-3 px-3 text-[10px] font-semibold tracking-[0.08em] uppercase text-outline">v1.5 &middot; Onreco</div>
             </div>
          </aside>
 

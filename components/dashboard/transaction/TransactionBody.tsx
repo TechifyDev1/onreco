@@ -5,12 +5,12 @@ import { ArrowDownLeft, ArrowUpRight, Copy, Receipt } from 'lucide-react';
 import { useToastStore } from '@/providers/toast-provider';
 
 export default function TransactionBody() {
-   const { transactions, filteredTransactions } = useTransactionStore();
+   const { transactions, filteredTransactions, paginatedTransactions } = useTransactionStore();
    const { show } = useToastStore();
    if (transactions.length === 0) {
       return (
          <tr>
-            <td colSpan={9} className="px-5 py-20 text-center">
+            <td colSpan={10} className="px-5 py-20 text-center">
                <div className="flex flex-col items-center justify-center gap-3 max-w-sm mx-auto">
                   <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
                      <Receipt className="w-6 h-6" strokeWidth={1.75} />
@@ -33,7 +33,7 @@ export default function TransactionBody() {
    if (filteredTransactions.length === 0) {
       return (
          <tr>
-            <td colSpan={9} className="px-5 py-20 text-center">
+            <td colSpan={10} className="px-5 py-20 text-center">
                <div className="flex flex-col items-center justify-center gap-3 max-w-sm mx-auto">
                   <div className="w-12 h-12 rounded-xl bg-surface-container-high flex items-center justify-center text-on-surface-variant">
                      <Receipt className="w-6 h-6" strokeWidth={1.75} />
@@ -47,7 +47,7 @@ export default function TransactionBody() {
          </tr>
       );
    }
-   return filteredTransactions.map((tx) => {
+   return paginatedTransactions.map((tx) => {
       const isIn = tx.direction === 'RECEIVED';
       return (
          <tr key={tx.id} className="border-t border-outline-variant/10 hover:bg-surface-container-low/50 transition-colors">
@@ -60,6 +60,18 @@ export default function TransactionBody() {
             <td className="px-5 py-4 font-semibold text-on-surface">{tx.asset}</td>
             <td className="px-5 py-4 font-mono text-on-surface text-right whitespace-nowrap">{tx.amount}</td>
             <td className="px-5 py-4 font-mono text-on-surface text-right whitespace-nowrap">{tx.usd}</td>
+            <td className="px-5 py-4 text-right whitespace-nowrap">
+               {tx.gasAmount != null ? (
+                  <div className="flex flex-col items-end">
+                     <span className="font-mono text-on-surface">{tx.gasAmount} {tx.gasCurrency}</span>
+                     {tx.convertedAmount != null && tx.convertedCurrency != null && (
+                        <span className="text-[11px] text-on-surface-variant">~{tx.convertedAmount} {tx.convertedCurrency}</span>
+                     )}
+                  </div>
+               ) : (
+                  <span className="text-on-surface-variant">—</span>
+               )}
+            </td>
             <td className="px-5 py-4 hidden md:table-cell text-on-surface-variant">{tx.wallet}</td>
             <td className="px-5 py-4 hidden lg:table-cell text-on-surface-variant">{tx.category}</td>
             <td className="px-5 py-4 hidden xl:table-cell font-mono text-xs max-w-37.5">

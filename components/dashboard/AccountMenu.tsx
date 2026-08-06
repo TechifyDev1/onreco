@@ -118,7 +118,7 @@ export default function AccountMenu() {
                   </div>
 
                   {/* Footer */}
-                  <div className="px-4 py-2 border-t border-outline-variant/10 text-[10px] font-semibold tracking-[0.08em] uppercase text-outline">Onreco &middot; v1.0.0</div>
+                  <div className="px-4 py-2 border-t border-outline-variant/10 text-[10px] font-semibold tracking-[0.08em] uppercase text-outline">Onreco &middot; v1.5</div>
                </div>
             )}
          </div>

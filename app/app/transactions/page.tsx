@@ -46,6 +46,7 @@ export default async function Page() {
                         <th className="px-5 py-3 font-semibold">Asset</th>
                         <th className="px-5 py-3 font-semibold text-right">Amount</th>
                         <th className="px-5 py-3 font-semibold text-right">USD</th>
+                        <th className="px-5 py-3 font-semibold text-right">Gas Fee</th>
                         <th className="px-5 py-3 font-semibold hidden md:table-cell">Wallet</th>
                         <th className="px-5 py-3 font-semibold hidden lg:table-cell">Category</th>
                         <th className="px-5 py-3 font-semibold hidden xl:table-cell">Counterparty</th>
