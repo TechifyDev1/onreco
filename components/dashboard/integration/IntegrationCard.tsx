@@ -1,6 +1,6 @@
 'use client';
 import { Integration } from '@/app/app/_data/integrations';
-import { ExternalLink, Loader2, Plus, Settings, Unplug } from 'lucide-react';
+import { ExternalLink, Loader2, Plus, Unplug } from 'lucide-react';
 import Image from 'next/image';
 import { useState } from 'react';
 import StatusPill from './StatusPill';
@@ -71,13 +71,6 @@ export default function IntegrationCard({ integration }: { integration: Integrat
             <div className="flex items-center gap-2">
                {integration.connected ? (
                   <>
-                     <button
-                        type="button"
-                        className="px-3 py-1.5 rounded-lg border border-outline-variant/20 text-on-surface text-xs font-semibold tracking-wider uppercase hover:border-primary/40 transition-colors inline-flex items-center gap-1.5"
-                     >
-                        <Settings className="w-3 h-3" strokeWidth={1.75} />
-                        Configure
-                     </button>
                      <button
                         type="button"
                         onClick={() => setShowConfirm(true)}

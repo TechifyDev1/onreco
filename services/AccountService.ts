@@ -7,9 +7,11 @@ export type QuickBooksAccount = {
 };
 
 export default class AccountService {
-  static async getOffsetAccounts(): Promise<QuickBooksAccount[]> {
+  static async getOffsetAccounts(
+    provider: string = 'quickbooks'
+  ): Promise<QuickBooksAccount[]> {
     const response = await ApiClient.get<QuickBooksAccount[]>(
-      '/integration/quickbooks/accounts'
+      `/integration/${provider}/accounts`
     );
     return response.data;
   }

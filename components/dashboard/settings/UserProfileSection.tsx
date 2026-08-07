@@ -4,7 +4,6 @@ import { Camera, Save, User } from 'lucide-react';
 import SectionCard from './SectionCard';
 import SectionHeading from './SectionHeading';
 import Field from './Field';
-import Toggle from './Toggle';
 import { useUserProfileStore } from '@/providers/user-profile-store';
 import UserService from '@/services/UserService';
 import { useToastStore } from '@/providers/toast-provider';
@@ -106,28 +105,6 @@ export default function UserProfileSection() {
           <Save className="w-4 h-4" strokeWidth={2} />
           {saving ? 'Saving…' : 'Save changes'}
         </button>
-      </div>
-
-      {/* Personal preferences */}
-      <div className="pt-5 border-t border-outline-variant/10">
-        <h3 className="text-sm font-semibold text-on-surface mb-3">
-          Preferences
-        </h3>
-        <div>
-          <Toggle
-            label="Show my activity to teammates"
-            description="When enabled, teammates can see which transactions you've categorized and which rules you've created."
-            defaultChecked
-          />
-          <Toggle
-            label="Compact tables"
-            description="Reduces row padding in transactions, wallets, and reports tables for higher information density."
-          />
-          <Toggle
-            label="Use 24-hour time"
-            description="Affects timestamps throughout the dashboard."
-          />
-        </div>
       </div>
     </SectionCard>
   );
