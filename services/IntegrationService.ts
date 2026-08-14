@@ -1,6 +1,5 @@
 import { Integration } from '@/app/app/_data/integrations';
 import ApiClient from './ApiClient';
-import { redirect } from 'next/navigation';
 
 export default class IntegrationService {
    private static readonly integrationbasePath = '/integration';
@@ -16,7 +15,7 @@ export default class IntegrationService {
          `${this.integrationbasePath}/${id}/connect`
       );
       const url = connectResponse.data.authorizationUrl;
-      redirect(url);
+      window.location.href = url;
    }
 
    static async disconnect(id: string) {

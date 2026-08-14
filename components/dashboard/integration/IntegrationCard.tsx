@@ -7,13 +7,10 @@ import StatusPill from './StatusPill';
 import IntegrationService from '@/services/IntegrationService';
 import { useIntegrationStore } from '@/providers/integration-store';
 import { useToastStore } from '@/providers/toast-provider';
+import { ApiError } from '@/services/ApiError';
 
 export default function IntegrationCard({ integration }: { integration: Integration }) {
-   const status = integration.connected
-      ? 'connected'
-      : integration.available
-        ? 'disconnected'
-        : 'soon';
+   const status = integration.connected ? 'connected' : integration.available ? 'disconnected' : 'soon';
 
    const [showConfirm, setShowConfirm] = useState(false);
    const [disconnecting, setDisconnecting] = useState(false);
@@ -35,19 +32,28 @@ export default function IntegrationCard({ integration }: { integration: Integrat
       }
    };
 
+   const handleConnect = async () => {
+      setConnecting(true);
+      try {
+         await IntegrationService.connect(integration.slug);
+      } catch (error) {
+         if (error instanceof ApiError) {
+            console.error(error.message);
+            show(`${error.message}`, 'error');
+         } else {
+            console.error(error);
+            show(`${integration.name} failed to connect`, 'error');
+         }
+      } finally {
+         setConnecting(false);
+      }
+   };
+
    return (
       <article className="bg-glass rounded-xl p-5 md:p-6 glow-top border border-outline-variant/10 flex flex-col gap-4">
          {/* Header */}
          <div className="flex items-start gap-3">
-            {integration.picUrl && (
-               <Image
-                  className="rounded-full object-cover"
-                  width={25}
-                  height={25}
-                  src={integration.picUrl}
-                  alt={integration.name}
-               />
-            )}
+            {integration.picUrl && <Image className="rounded-full object-cover" width={25} height={25} src={integration.picUrl} alt={integration.name} />}
             <div className="flex-1 min-w-0">
                <div className="flex items-center gap-2 flex-wrap">
                   <h3 className="text-base font-semibold text-on-surface">{integration.name}</h3>
@@ -61,13 +67,7 @@ export default function IntegrationCard({ integration }: { integration: Integrat
 
          {/* Footer */}
          <div className="mt-auto pt-3 border-t border-outline-variant/10 flex items-center justify-between gap-3">
-            <div className="text-xs text-on-surface-variant">
-               {!integration.available ? (
-                  <span>On our roadmap</span>
-               ) : !integration.connected ? (
-                  <span>Not connected</span>
-               ) : null}
-            </div>
+            <div className="text-xs text-on-surface-variant">{!integration.available ? <span>On our roadmap</span> : !integration.connected ? <span>Not connected</span> : null}</div>
             <div className="flex items-center gap-2">
                {integration.connected ? (
                   <>
@@ -93,20 +93,9 @@ export default function IntegrationCard({ integration }: { integration: Integrat
                      type="button"
                      disabled={connecting}
                      className="btn-primary px-3 py-1.5 rounded-lg text-on-primary-container text-xs font-semibold tracking-wider uppercase hover:opacity-90 transition-opacity inline-flex items-center gap-1.5 disabled:opacity-50"
-                     onClick={async () => {
-                        setConnecting(true);
-                        try {
-                           await IntegrationService.connect(integration.slug);
-                        } finally {
-                           setConnecting(false);
-                        }
-                     }}
+                     onClick={() => handleConnect()}
                   >
-                     {connecting ? (
-                        <Loader2 className="w-3 h-3 animate-spin" strokeWidth={2.5} />
-                     ) : (
-                        <Plus className="w-3 h-3" strokeWidth={2.5} />
-                     )}
+                     {connecting ? <Loader2 className="w-3 h-3 animate-spin" strokeWidth={2.5} /> : <Plus className="w-3 h-3" strokeWidth={2.5} />}
                      {connecting ? 'Connecting…' : 'Connect'}
                   </button>
                )}
@@ -119,9 +108,7 @@ export default function IntegrationCard({ integration }: { integration: Integrat
                <div className="bg-surface-container rounded-2xl border border-outline-variant/15 p-6 w-full max-w-sm mx-4 flex flex-col gap-4">
                   <div>
                      <h3 className="text-base font-semibold text-on-surface">Disconnect {integration.name}?</h3>
-                     <p className="text-sm text-on-surface-variant mt-1">
-                        Your QuickBooks connection will be removed. You can reconnect at any time.
-                     </p>
+                     <p className="text-sm text-on-surface-variant mt-1">Your QuickBooks connection will be removed. You can reconnect at any time.</p>
                   </div>
                   <div className="flex items-center justify-end gap-3">
                      <button
