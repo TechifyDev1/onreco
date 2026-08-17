@@ -1,6 +1,5 @@
 import { Play } from "lucide-react";
 import Link from "next/link";
-import ComingSoonButton from "@/components/shared/ComingSoonButton";
 
 export default function HeroSection() {
   const transactionSample = [
@@ -48,13 +47,13 @@ export default function HeroSection() {
             >
               Get Started
             </Link>
-            <ComingSoonButton
-              message="Demo video will be available soon!"
+            <Link
+              href="/demo"
               className="flex items-center justify-center gap-2 bg-surface-variant border border-outline-variant/30 text-on-surface text-base font-medium px-6 py-3 rounded-lg hover:bg-surface-bright transition-colors text-center cursor-pointer"
             >
               <Play className="w-5 h-5 fill-current" />
               See How It Works
-            </ComingSoonButton>
+            </Link>
           </div>
         </div>
 

@@ -51,6 +51,14 @@ export default function Footer() {
               </li>
               <li>
                 <Link
+                  href="/demo"
+                  className="text-sm text-on-surface-variant hover:text-primary transition-colors"
+                >
+                  Demo
+                </Link>
+              </li>
+              <li>
+                <Link
                   href="/blog"
                   className="text-sm text-on-surface-variant hover:text-primary transition-colors"
                 >

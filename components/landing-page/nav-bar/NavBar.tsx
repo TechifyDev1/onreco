@@ -36,6 +36,12 @@ export default function NavBar() {
           >
             How it Works
           </Link>
+          <Link
+            href="/demo"
+            className="text-xs font-medium tracking-widest uppercase text-on-surface-variant hover:text-primary transition-colors duration-200"
+          >
+            Demo
+          </Link>
           <a
             href="https://myhappr.com/onreco"
             target="_blank"
