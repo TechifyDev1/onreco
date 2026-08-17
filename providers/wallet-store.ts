@@ -19,13 +19,15 @@ export const useWalletStore = create<WalletStoreState>((set) => ({
    paused: [],
    chainsCovered: 0,
 
-   setWallets: (wallets) =>
+   setWallets: (wallets) => {
+      const sorted = [...wallets].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
       set({
-         wallets: wallets,
-         monitoring: wallets.filter((wallet) => wallet.active),
-         paused: wallets.filter((wallet) => !wallet.active),
-         chainsCovered: new Set(wallets.flatMap((wallet) => wallet.monitoredCurrencies)).size,
-      }),
+         wallets: sorted,
+         monitoring: sorted.filter((wallet) => wallet.active),
+         paused: sorted.filter((wallet) => !wallet.active),
+         chainsCovered: new Set(sorted.flatMap((wallet) => wallet.monitoredCurrencies)).size,
+      });
+   },
 
    addWallet: (wallet) =>
       set((state) => {

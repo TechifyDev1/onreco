@@ -1,12 +1,13 @@
 import type { Metadata } from 'next'
-import { Inter, JetBrains_Mono } from 'next/font/google'
+import { Space_Grotesk, JetBrains_Mono } from 'next/font/google'
 import './globals.css'
 import { ReactNode } from 'react'
 import Toast from '@/components/shared/Toast'
+import NextTopLoader from 'nextjs-toploader'
 
-const inter = Inter({
+const spaceGrotesk = Space_Grotesk({
   subsets: ['latin'],
-  variable: '--font-inter',
+  variable: '--font-grotesk',
   display: 'swap',
 })
 
@@ -99,8 +100,6 @@ export const metadata: Metadata = {
     'startup bookkeeping automation',
 
     // Networks
-    'Tron stablecoin accounting',
-    'Tron USDT accounting',
     'Solana stablecoin accounting',
     'Solana USDC accounting',
     'Base blockchain accounting',
@@ -119,7 +118,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Stablecoin Accounting for QuickBooks & Xero | Onreco',
     description:
-      'Connect your wallet. Onreco detects USDT and USDC transactions on Tron, Solana, and Base, then syncs them directly to QuickBooks or Xero.',
+      'Connect your wallet. Onreco detects USDT and USDC transactions on Base and Solana, then syncs them directly to QuickBooks or Xero.',
     type: 'website',
     url: `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL ?? 'localhost:3000'}`,
     siteName: 'Onreco',
@@ -160,9 +159,22 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" className="dark" data-scroll-behavior="smooth">
       <body
-        className={`${inter.variable} ${jetbrainsMono.variable} font-sans antialiased bg-background text-on-surface`}
+        className={`${spaceGrotesk.variable} ${jetbrainsMono.variable} font-sans antialiased bg-background text-on-surface`}
       >
         <Toast />
+        <NextTopLoader
+          color="#2563EB"
+          initialPosition={0.08}
+          crawlSpeed={200}
+          height={3}
+          crawl={true}
+          showSpinner={false}
+          easing="ease"
+          speed={200}
+          shadow="0 0 10px #2563EB,0 0 5px #2563EB"
+          zIndex={1600}
+          showAtBottom={false}
+        />
         {children}
       </body>
     </html>

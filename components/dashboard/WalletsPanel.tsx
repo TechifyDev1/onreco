@@ -1,11 +1,14 @@
 'use client';
 
-import { Copy, Wallet2 } from 'lucide-react';
+import { Wallet2 } from 'lucide-react';
 import { useDashboardStore } from '@/providers/dashboard-store';
 
 export default function WalletsPanel() {
    const connectedWallets = useDashboardStore((s) => s.connectedWallets);
-   const monitoring = connectedWallets.filter((w) => w.active);
+   const sortedWallets = [...connectedWallets].sort(
+      (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+   );
+   const monitoring = sortedWallets.filter((w) => w.active);
 
    return (
       <section
@@ -30,7 +33,7 @@ export default function WalletsPanel() {
             </a>
          </header>
 
-         {connectedWallets.length === 0 ? (
+         {sortedWallets.length === 0 ? (
             <div className="flex-1 flex flex-col items-center justify-center text-center p-6 bg-surface-container-low/20 rounded-lg border border-dashed border-outline-variant/10 min-h-[220px]">
                <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center text-primary mb-3">
                   <Wallet2 className="w-5 h-5" strokeWidth={1.75} />
@@ -42,7 +45,7 @@ export default function WalletsPanel() {
             </div>
          ) : (
             <ul className="flex flex-col divide-y divide-outline-variant/10">
-               {connectedWallets.map((w) => (
+               {sortedWallets.map((w) => (
                   <li
                      key={w.id}
                      className="py-3 first:pt-0 last:pb-0 flex items-center gap-3"
@@ -62,14 +65,6 @@ export default function WalletsPanel() {
                         </div>
                         <div className="flex items-center gap-1.5 mt-0.5">
                            <span className="font-mono text-xs text-on-surface-variant truncate">{w.address}</span>
-                           <button
-                              type="button"
-                              aria-label="Copy address"
-                              onClick={() => navigator.clipboard.writeText(w.address)}
-                              className="text-on-surface-variant/60 hover:text-primary transition-colors shrink-0"
-                           >
-                              <Copy className="w-3 h-3" strokeWidth={1.75} />
-                           </button>
                         </div>
                      </div>
 

@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import Image from 'next/image'
 import {
   ArrowLeft,
   Check,
@@ -77,12 +78,21 @@ export default function SignupPage() {
         className="grow flex items-center justify-center px-4 py-12 md:py-16 relative"
         style={{
           background:
-            'radial-gradient(ellipse 80% 60% at 50% 0%, rgba(180,197,255,0.10) 0%, transparent 70%)',
+            'radial-gradient(ellipse 80% 60% at 50% 0%, rgba(59,130,246,0.07) 0%, transparent 70%)',
         }}
       >
         <div className="w-full max-w-250 grid md:grid-cols-2 overflow-hidden rounded-xl border border-outline-variant/10 shadow-2xl bg-glass glow-top">
           {/* Left Side: Marketing / Atmosphere */}
           <div className="hidden md:flex flex-col justify-between p-12 bg-surface-container-low relative overflow-hidden">
+            <Image
+              src="/login_image.jpg"
+              alt="Stablecoin accounting for QuickBooks and Xero"
+              fill
+              className="absolute inset-0 w-full h-full object-cover"
+              loading="eager"
+            />
+            <div className="absolute inset-0 bg-linear-to-t from-surface via-surface/70 to-transparent z-[1]" />
+
             <div className="z-10">
               <h1 className="text-4xl md:text-[48px] leading-[1.05] font-bold tracking-tight text-on-surface mb-6">
                 Automate Stablecoin Accounting.
@@ -125,6 +135,23 @@ export default function SignupPage() {
                   </div>
                 </div>
               </div>
+
+              <p className="text-[10px] leading-4 text-on-surface-variant/50 mt-8">
+                Photo by{' '}
+                <a
+                  href="https://unsplash.com/@dotnny?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText"
+                  className="underline hover:text-on-surface transition-colors"
+                >
+                  Donny Jiang
+                </a>{' '}
+                on{' '}
+                <a
+                  href="https://unsplash.com/photos/low-angle-photo-of-high-rise-buildings-under-white-sky-42gFAgdIUC8?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText"
+                  className="underline hover:text-on-surface transition-colors"
+                >
+                  Unsplash
+                </a>
+              </p>
             </div>
 
             {/* Abstract visual asset */}

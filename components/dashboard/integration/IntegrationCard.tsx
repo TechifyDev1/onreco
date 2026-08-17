@@ -105,7 +105,7 @@ export default function IntegrationCard({ integration }: { integration: Integrat
          {/* Disconnect confirmation overlay */}
          {showConfirm && (
             <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-               <div className="bg-surface-container rounded-2xl border border-outline-variant/15 p-6 w-full max-w-sm mx-4 flex flex-col gap-4">
+               <div className="bg-surface-container rounded-2xl border border-outline-variant p-6 w-full max-w-sm mx-4 flex flex-col gap-4">
                   <div>
                      <h3 className="text-base font-semibold text-on-surface">Disconnect {integration.name}?</h3>
                      <p className="text-sm text-on-surface-variant mt-1">Your QuickBooks connection will be removed. You can reconnect at any time.</p>

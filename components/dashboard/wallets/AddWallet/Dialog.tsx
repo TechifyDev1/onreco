@@ -114,7 +114,7 @@ export default function Dialog({ open, onOpenChange }: { open: boolean; onOpenCh
 
          <div role="dialog" aria-modal="true" aria-labelledby="add-wallet-title" className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4 pointer-events-none">
             <div
-               className="pointer-events-auto bg-surface-container w-full max-w-lg rounded-t-2xl sm:rounded-2xl shadow-2xl flex flex-col max-h-[90vh] overflow-hidden animate-slide-up sm:animate-scale-in"
+               className="pointer-events-auto bg-surface-container w-full max-w-lg rounded-t-2xl sm:rounded-2xl border border-outline-variant shadow-2xl flex flex-col max-h-[90vh] overflow-hidden animate-slide-up sm:animate-scale-in"
                onClick={(e) => e.stopPropagation()}
             >
                <div className="flex items-start justify-between gap-3 px-6 py-5 border-b border-outline-variant/10 shrink-0">

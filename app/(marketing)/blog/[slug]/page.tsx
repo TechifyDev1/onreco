@@ -183,7 +183,7 @@ export default async function BlogPostPage({
           className="relative px-4 md:px-8 pt-16 pb-12"
           style={{
             background:
-              'radial-gradient(ellipse 70% 50% at 50% 0%, rgba(180,197,255,0.10) 0%, transparent 70%)',
+              'radial-gradient(ellipse 70% 50% at 50% 0%, rgba(59,130,246,0.07) 0%, transparent 70%)',
           }}
         >
           <div className="max-w-3xl mx-auto">

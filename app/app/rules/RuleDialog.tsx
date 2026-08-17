@@ -114,7 +114,7 @@ export default function RuleDialog({
       <form
         onSubmit={submit}
         onClick={(e) => e.stopPropagation()}
-        className="w-full max-w-2xl bg-surface-container-lowest rounded-2xl border border-outline-variant/10 shadow-2xl flex flex-col max-h-[90vh] overflow-hidden"
+        className="w-full max-w-2xl bg-surface-container-lowest rounded-2xl border border-outline-variant shadow-2xl flex flex-col max-h-[90vh] overflow-hidden"
       >
         <header className="px-6 py-5 border-b border-outline-variant/10 flex items-start justify-between gap-3">
           <div>

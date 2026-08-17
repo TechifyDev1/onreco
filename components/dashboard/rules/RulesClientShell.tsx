@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { AlertCircle, Loader2, Pause, Play, Plus, RefreshCw, Sparkles } from 'lucide-react';
 import { useToastStore } from '@/providers/toast-provider';
 import { useRuleStore } from '@/providers/rule-store';
+import { useAccountStore } from '@/providers/account-store';
 import RuleService from '@/services/RuleService';
 import { ApiError } from '@/services/ApiError';
 import { type CreateRuleRequest, type Rule } from '@/app/app/_data/rules';
@@ -14,6 +15,7 @@ import { HowConditionsWork, RuleCard } from './_view';
 export default function RulesClientShell() {
    const { rules, loading, error, setRules, addRule, updateRule, removeRule, setLoading, setError } = useRuleStore();
    const { show } = useToastStore();
+   const offsetAccounts = useAccountStore((s) => s.offsetAccounts);
 
    const [dialogOpen, setDialogOpen] = useState(false);
    const [editing, setEditing] = useState<Rule | null>(null);
@@ -178,7 +180,9 @@ export default function RulesClientShell() {
                ) : sortedRules.length === 0 ? (
                   <EmptyState onAddClick={openCreate} />
                ) : (
-                  sortedRules.map((rule) => <RuleCard key={rule.id} rule={rule} onToggleActive={() => toggleActive(rule)} onEdit={() => openEdit(rule)} onDelete={() => setDeletingId(rule.id)} />)
+                  sortedRules.map((rule) => (
+                     <RuleCard key={rule.id} rule={rule} accounts={offsetAccounts} onToggleActive={() => toggleActive(rule)} onEdit={() => openEdit(rule)} onDelete={() => setDeletingId(rule.id)} />
+                  ))
                )}
             </section>
 

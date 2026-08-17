@@ -59,17 +59,18 @@ export const useTransactionStore = create<TransactionStoreState>((set, get) => {
 });
 
 function applyFilter(transactions: Transaction[], filter: FilterKey): Transaction[] {
+   const sorted = [...transactions].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
    switch (filter) {
       case 'USDT':
-         return transactions.filter((tx) => tx.asset === 'USDT');
+         return sorted.filter((tx) => tx.asset === 'USDT');
       case 'USDC':
-         return transactions.filter((tx) => tx.asset === 'USDC');
+         return sorted.filter((tx) => tx.asset === 'USDC');
       case 'Income':
-         return transactions.filter((tx) => tx.direction === 'RECEIVED');
+         return sorted.filter((tx) => tx.direction === 'RECEIVED');
       case 'Expense':
-         return transactions.filter((tx) => tx.direction === 'SENT');
+         return sorted.filter((tx) => tx.direction === 'SENT');
       default:
-         return transactions;
+         return sorted;
    }
 }
 

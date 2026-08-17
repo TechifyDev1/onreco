@@ -26,7 +26,7 @@ export default function Home() {
     },
     "featureList": [
       "Automated stablecoin bookkeeping",
-      "Real-time transaction detection on Tron, Solana, and Base",
+      "Real-time transaction detection on Base and Solana",
       "Direct sync to QuickBooks and Xero",
       "Automated journal entries and reconciliation",
     ],

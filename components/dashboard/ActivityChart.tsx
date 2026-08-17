@@ -77,8 +77,8 @@ export default function ActivityChart() {
                <div className="flex items-center gap-4 mt-1">
                   <p className="text-sm text-on-surface-variant">Inflow &amp; outflow over the selected period.</p>
                   <div className="flex items-center gap-3 text-[10px] font-semibold tracking-[0.06em] uppercase text-on-surface-variant">
-                     <span className="flex items-center gap-1.5"><span className="w-3 h-0.5 bg-[#b4c5ff] rounded inline-block" />Inflow</span>
-                     <span className="flex items-center gap-1.5"><span className="w-3 h-0.5 bg-[#c5b4ff] rounded inline-block opacity-70" />Outflow</span>
+                     <span className="flex items-center gap-1.5"><span className="w-3 h-0.5 bg-[#16A34A] rounded inline-block" />Inflow</span>
+                     <span className="flex items-center gap-1.5"><span className="w-3 h-0.5 bg-[#F59E0B] rounded inline-block opacity-70" />Outflow</span>
                   </div>
                </div>
             </div>
@@ -109,12 +109,12 @@ export default function ActivityChart() {
                <AreaChart data={data} margin={{ top: 4, right: 4, left: 0, bottom: 0 }}>
                   <defs>
                      <linearGradient id="grad-inflow" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stopColor="#b4c5ff" stopOpacity={0.3} />
-                        <stop offset="100%" stopColor="#b4c5ff" stopOpacity="0" />
+                        <stop offset="0%" stopColor="#16A34A" stopOpacity={0.3} />
+                        <stop offset="100%" stopColor="#16A34A" stopOpacity="0" />
                      </linearGradient>
                      <linearGradient id="grad-outflow" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stopColor="#c5b4ff" stopOpacity={0.2} />
-                        <stop offset="100%" stopColor="#c5b4ff" stopOpacity="0" />
+                        <stop offset="0%" stopColor="#F59E0B" stopOpacity={0.2} />
+                        <stop offset="100%" stopColor="#F59E0B" stopOpacity="0" />
                      </linearGradient>
                   </defs>
 
@@ -142,29 +142,29 @@ export default function ActivityChart() {
                      width={60}
                   />
 
-                  <Tooltip content={<ChartTooltip />} cursor={{ stroke: 'rgba(180,197,255,0.15)', strokeWidth: 1 }} />
+                  <Tooltip content={<ChartTooltip />} cursor={{ stroke: 'rgba(59,130,246,0.2)', strokeWidth: 1 }} />
 
                   <Area
                      type="monotone"
                      dataKey="outFlow"
                      name="outflow"
-                     stroke="#c5b4ff"
+                     stroke="#F59E0B"
                      strokeWidth={1.5}
                      strokeDasharray="4 3"
                      fill="url(#grad-outflow)"
                      dot={false}
-                     activeDot={{ r: 4, fill: '#c5b4ff', strokeWidth: 0 }}
+                     activeDot={{ r: 4, fill: '#F59E0B', strokeWidth: 0 }}
                   />
 
                   <Area
                      type="monotone"
                      dataKey="inFlow"
                      name="inflow"
-                     stroke="#b4c5ff"
+                     stroke="#16A34A"
                      strokeWidth={2}
                      fill="url(#grad-inflow)"
                      dot={false}
-                     activeDot={{ r: 4, fill: '#b4c5ff', strokeWidth: 0 }}
+                     activeDot={{ r: 4, fill: '#16A34A', strokeWidth: 0 }}
                   />
                </AreaChart>
             </ResponsiveContainer>

@@ -15,6 +15,6 @@ export default class AccountService {
     const response = await ApiClient.get<QuickBooksAccount[]>(
       `/integration/${connected.slug}/accounts`
     );
-    return response.data;
+    return response.data.sort((a, b) => a.label.localeCompare(b.label));
   }
 }

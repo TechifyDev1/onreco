@@ -42,6 +42,22 @@ export default class AuthService {
       // Best-effort — session will be cleared by redirect
     }
   }
+
+  static async forgotPassword(request: ForgotPasswordRequest): Promise<{ message: string }> {
+    const { data } = await ApiClient.post<{ message: string }, ForgotPasswordRequest>(
+      `${this.authBasePath}/password/forgot`,
+      request
+    )
+    return data
+  }
+
+  static async resetPassword(request: ResetPasswordRequest): Promise<{ message: string }> {
+    const { data } = await ApiClient.post<{ message: string }, ResetPasswordRequest>(
+      `${this.authBasePath}/password/reset`,
+      request
+    )
+    return data
+  }
 }
 
 export interface AuthResponse {
@@ -59,4 +75,13 @@ export interface RegisterRequest {
 export interface LoginRequest {
   email: string
   password: string
+}
+
+export interface ForgotPasswordRequest {
+  email: string
+}
+
+export interface ResetPasswordRequest {
+  token: string
+  newPassword: string
 }

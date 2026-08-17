@@ -68,7 +68,7 @@ export default function AccountMenu() {
             {open && (
                <div
                   role="menu"
-                  className="absolute right-0 top-full mt-2 w-72 bg-surface-container-lowest/95 backdrop-blur-md border border-outline-variant/15 rounded-xl shadow-2xl glow-top overflow-hidden z-50"
+                  className="absolute right-0 top-full mt-2 w-72 bg-surface-container-lowest/95 backdrop-blur-md border border-outline-variant rounded-xl shadow-2xl glow-top overflow-hidden z-50"
                >
                   {/* Identity */}
                   <div className="p-4 border-b border-outline-variant/10">

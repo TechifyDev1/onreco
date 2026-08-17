@@ -13,7 +13,7 @@ export default function Footer() {
               Onreco
             </div>
             <p className="text-sm text-on-surface-variant max-w-sm leading-5">
-              The stablecoin accounting platform for QuickBooks.
+              The stablecoin accounting platform for QuickBooks &amp; Xero.
               Automate bookkeeping, reconciliation, and journal entries for USDT
               and USDC.
             </p>

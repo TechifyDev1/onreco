@@ -73,7 +73,7 @@ export default function LoginPage() {
         className="grow flex items-center justify-center px-4 py-12 md:py-16 relative"
         style={{
           background:
-            'radial-gradient(ellipse 80% 60% at 50% 0%, rgba(180,197,255,0.10) 0%, transparent 70%)',
+            'radial-gradient(ellipse 80% 60% at 50% 0%, rgba(59,130,246,0.07) 0%, transparent 70%)',
         }}
       >
         <div className="w-full max-w-275 grid md:grid-cols-12 overflow-hidden rounded-xl border border-outline-variant/10 shadow-2xl bg-glass glow-top relative">
@@ -82,7 +82,7 @@ export default function LoginPage() {
             className="absolute inset-0 opacity-[0.03] pointer-events-none"
             style={{
               backgroundImage:
-                'radial-gradient(#ffffff 0.5px, transparent 0.5px)',
+                'radial-gradient(#D1D5DB 0.5px, transparent 0.5px)',
               backgroundSize: '24px 24px',
             }}
           />
@@ -90,7 +90,7 @@ export default function LoginPage() {
           {/* Left Side: Visual / Trust */}
           <div className="hidden md:flex md:col-span-5 bg-surface-container relative overflow-hidden flex-col justify-end p-12 border-r border-outline-variant/10">
             <Image
-              src="/login_image.png"
+              src="/login_image.jpg"
               alt="Onreco stablecoin accounting dashboard"
               fill
               className="absolute inset-0 w-full h-full object-cover"
@@ -106,6 +106,22 @@ export default function LoginPage() {
                 Monitor USDT and USDC transactions, automate bookkeeping
                 workflows, manage reconciliation, and sync accounting records to
                 QuickBooks and Xero.
+              </p>
+              <p className="text-[10px] leading-4 text-on-surface-variant/50 mt-6">
+                Photo by{' '}
+                <a
+                  href="https://unsplash.com/@dotnny?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText"
+                  className="underline hover:text-on-surface transition-colors"
+                >
+                  Donny Jiang
+                </a>{' '}
+                on{' '}
+                <a
+                  href="https://unsplash.com/photos/low-angle-photo-of-high-rise-buildings-under-white-sky-42gFAgdIUC8?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText"
+                  className="underline hover:text-on-surface transition-colors"
+                >
+                  Unsplash
+                </a>
               </p>
             </div>
           </div>
@@ -154,14 +170,14 @@ export default function LoginPage() {
               <p className="mt-8 text-center text-sm leading-5 text-on-surface-variant/60">
                 By signing in, you agree to our{' '}
                 <Link
-                  href="#"
+                  href="/eula"
                   className="text-on-surface hover:text-primary underline"
                 >
                   Terms of Service
                 </Link>{' '}
                 and{' '}
                 <Link
-                  href="#"
+                  href="/privacy"
                   className="text-on-surface hover:text-primary underline"
                 >
                   Privacy Policy

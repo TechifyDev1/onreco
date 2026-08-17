@@ -61,7 +61,7 @@ export default function MobileBottomBar() {
           aria-modal="true"
           aria-label="More navigation"
           className={
-            'absolute inset-x-3 bottom-[88px] bg-surface-container-lowest/95 backdrop-blur-md border border-outline-variant/15 rounded-2xl shadow-2xl transition-all duration-200 ease-out origin-bottom ' +
+            'absolute inset-x-3 bottom-[88px] bg-surface-container-lowest/95 backdrop-blur-md border border-outline-variant rounded-2xl shadow-2xl transition-all duration-200 ease-out origin-bottom ' +
             (open
               ? 'opacity-100 translate-y-0 pointer-events-auto'
               : 'opacity-0 translate-y-3 pointer-events-none')
@@ -107,7 +107,7 @@ export default function MobileBottomBar() {
 
       {/* Bar */}
       <nav
-        className="lg:hidden fixed bottom-3 inset-x-3 z-40 bg-surface-container-lowest/90 backdrop-blur-md border border-outline-variant/15 rounded-2xl shadow-2xl"
+        className="lg:hidden fixed bottom-3 inset-x-3 z-40 bg-surface-container-lowest/90 backdrop-blur-md border border-outline-variant rounded-2xl shadow-2xl"
         aria-label="Primary navigation"
       >
         <ul className="flex items-stretch justify-between px-2 py-1.5">

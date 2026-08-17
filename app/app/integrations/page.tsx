@@ -31,9 +31,8 @@ export default async function Page() {
               Integrations
             </h1>
             <p className="text-sm text-on-surface-variant mt-1">
-              Connect your accounting platform, bank, and other tools. Onreco
-              pushes categorized stablecoin activity wherever your team already
-              works.
+              Connect your accounting platform. Onreco pushes categorized
+              stablecoin activity straight into your ledger.
             </p>
           </div>
           <a

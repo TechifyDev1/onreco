@@ -8,6 +8,12 @@ const BaseIcon = (props: SVGProps<SVGSVGElement>) => (
   </svg>
 );
 
+const SolanaIcon = (props: SVGProps<SVGSVGElement>) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
+    <path d="M5.5 7.2 7 5.8h9.5l1.5 1.4H5.5zm0 5.9 1.5-1.4h9.5l1.5 1.4H5.5zm0 5.9 1.5-1.4h9.5l1.5 1.4H5.5z" />
+  </svg>
+);
+
 const USDCIcon = (props: SVGProps<SVGSVGElement>) => (
   <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
     <circle cx="12" cy="12" r="11" fill="#2775CA" />
@@ -24,9 +30,11 @@ const USDTIcon = (props: SVGProps<SVGSVGElement>) => (
 
 const integrations = [
   { label: "Base", icon: BaseIcon },
+  { label: "Solana", icon: SolanaIcon },
   { label: "USDC", icon: USDCIcon },
   { label: "USDT", icon: USDTIcon },
   { label: "QuickBooks", icon: BookOpen },
+  { label: "Xero", icon: BookOpen },
 ];
 
 export default function IntegrationBar() {

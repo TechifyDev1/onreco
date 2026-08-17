@@ -8,7 +8,7 @@ export default function CTASection() {
         className="absolute inset-0 -z-10 pointer-events-none"
         style={{
           background:
-            "radial-gradient(circle at center, rgba(180,197,255,0.05) 0%, transparent 65%)",
+            "radial-gradient(circle at center, rgba(59,130,246,0.04) 0%, transparent 65%)",
         }}
       />
 

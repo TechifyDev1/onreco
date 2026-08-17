@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { ArrowRight, CheckCircle2, CircleHelp, ExternalLink, Link2, Loader2, RefreshCw } from 'lucide-react';
+import { ArrowRight, CheckCircle2, CircleHelp, Link2, Loader2, RefreshCw } from 'lucide-react';
 import { confidenceStyle, confidenceLabel, type ReconcileMatch } from '../_data/reconciliation';
 import ReconcileService from '@/services/ReconcileService';
 import { useToastStore } from '@/providers/toast-provider';
@@ -186,9 +186,6 @@ function MatchCard({ match, confirming, onConfirm }: { match: ReconcileMatch; co
                         <span className="font-mono">${match.invoice.totalAmount}</span>
                         <span>·</span>
                         <span>Due {match.invoice.dueDate ? new Date(match.invoice.dueDate).toLocaleDateString() : '—'}</span>
-                        <a href="#" aria-label="Open invoice" className="text-on-surface-variant hover:text-primary transition-colors">
-                           <ExternalLink className="w-3 h-3" strokeWidth={1.75} />
-                        </a>
                      </div>
                   </>
                )}
@@ -233,7 +230,7 @@ function EmptyState() {
          <div>
             <h3 className="text-base font-semibold text-on-surface">No pending matches</h3>
             <p className="text-xs text-on-surface-variant max-w-sm mx-auto mt-1.5 leading-relaxed">
-               All stablecoin payments have been reconciled, or no open invoices exist in QuickBooks. Categorize pending transactions first.
+               All stablecoin payments have been reconciled, or no open invoices exist in QuickBooks or Xero. Categorize pending transactions first.
             </p>
          </div>
       </div>

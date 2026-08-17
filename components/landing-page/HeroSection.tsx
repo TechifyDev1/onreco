@@ -16,9 +16,9 @@ export default function HeroSection() {
       token: "USDT",
       tokenBg: "bg-[#26A17B]/20 text-[#26A17B]",
       label: "Contractor Payroll",
-      addr: "0x7c…e4d1",
+      addr: "DcHv…wS7q",
       amount: "- 1,250.00",
-      status: "QuickBooks: Synced",
+      status: "Xero: Synced",
     },
   ];
   return (
@@ -26,7 +26,7 @@ export default function HeroSection() {
       className="px-4 md:px-8 py-24 max-w-container-max mx-auto relative h-screen flex justify-center items-center"
       style={{
         background:
-          "radial-gradient(ellipse 80% 50% at 50% 0%, rgba(180,197,255,0.10) 0%, transparent 70%)",
+          "radial-gradient(ellipse 80% 50% at 50% 0%, rgba(59,130,246,0.07) 0%, transparent 70%)",
       }}
     >
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
@@ -34,11 +34,11 @@ export default function HeroSection() {
         <div className="flex flex-col gap-6 z-10">
           <h1 className="text-[48px] leading-14 font-bold tracking-tight text-on-surface">
             Automate Stablecoin Accounting{" "}
-            <span className="text-primary">for QuickBooks.</span>
+            <span className="text-primary">for QuickBooks &amp; Xero.</span>
           </h1>
 
           <p className="text-[18px] leading-7 text-on-surface-variant max-w-lg">
-            Onreco monitors your wallets on Base. Every USDC and USDT transaction is detected, categorized, matched to invoices, and synced to QuickBooks without manual entry.
+            Onreco monitors your wallets on Base and Solana. Every USDC and USDT transaction is detected, categorized, matched to invoices, and synced to QuickBooks or Xero without manual entry.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 pt-4">

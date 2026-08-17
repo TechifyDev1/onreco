@@ -159,7 +159,7 @@ function WalletCard({ wallet }: { wallet: { id: string; address: string; chain: 
                   <MoreVertical className="w-4 h-4" strokeWidth={1.75} />
                </button>
                {menuOpen && (
-                  <div className="absolute right-0 top-full mt-1 z-30 w-44 bg-surface-container rounded-xl border border-outline-variant/15 shadow-xl py-1 animate-fade-in">
+                  <div className="absolute right-0 top-full mt-1 z-30 w-44 bg-surface-container rounded-xl border border-outline-variant shadow-xl py-1 animate-fade-in">
                      <button
                         type="button"
                         onClick={() => {
@@ -201,7 +201,7 @@ function WalletCard({ wallet }: { wallet: { id: string; address: string; chain: 
 
          {showConfirm && (
             <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-               <div className="bg-surface-container rounded-2xl border border-outline-variant/15 p-6 w-full max-w-sm mx-4 flex flex-col gap-4">
+               <div className="bg-surface-container rounded-2xl border border-outline-variant p-6 w-full max-w-sm mx-4 flex flex-col gap-4">
                   <div>
                      <h3 className="text-base font-semibold text-on-surface">Remove {wallet.label || 'wallet'}?</h3>
                      <p className="text-sm text-on-surface-variant mt-1">

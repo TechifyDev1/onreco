@@ -62,7 +62,7 @@ export default function LogoutDialog({ open, onOpenChange, onConfirm }: Props) {
                 aria-labelledby="logout-title"
                 aria-describedby="logout-description"
                 className={
-                    "relative w-full max-w-sm bg-surface-container-lowest border border-outline-variant/15 rounded-2xl shadow-2xl glow-top transition-all duration-200 ease-out " +
+                    "relative w-full max-w-sm bg-surface-container-lowest border border-outline-variant rounded-2xl shadow-2xl glow-top transition-all duration-200 ease-out " +
                     (open
                         ? "opacity-100 scale-100 pointer-events-auto"
                         : "opacity-0 scale-95 pointer-events-none")

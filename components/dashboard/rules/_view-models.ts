@@ -63,12 +63,13 @@ export function buildConditions(rule: Rule): ConditionVM[] {
  * Build the "Then" chain. Currently this is the QB account mapping that
  * drives the journal entry: wallet side / offset side.
  */
-export function buildAction(rule: Rule): ActionVM {
-  return {
-    entries: [
-      { label: 'Offset account', value: rule.offsetAccountId },
-    ],
-  };
+export function buildAction(rule: Rule, accounts: { id: string; label: string }[] = []): ActionVM {
+   const offset = accounts.find((a) => a.id === rule.offsetAccountId);
+   return {
+      entries: [
+         { label: 'Offset account', value: offset?.label ?? rule.offsetAccountId },
+      ],
+   };
 }
 
 /** Lightweight, deterministic relative-time formatter. */

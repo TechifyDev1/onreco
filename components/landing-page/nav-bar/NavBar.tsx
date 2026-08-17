@@ -5,7 +5,7 @@ export default function NavBar() {
   return (
     <nav
       className="sticky top-0 z-50 backdrop-blur-md border-b border-outline-variant/10"
-      style={{ background: 'rgba(11,19,38,0.80)' }}
+      style={{ background: 'rgba(255,255,255,0.80)' }}
     >
       <div className="flex justify-between items-center w-full px-4 md:px-8 max-w-container-max mx-auto h-16">
         {/* Logo */}

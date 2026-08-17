@@ -2,7 +2,8 @@
 import { handleLogin } from '@/app/actions/auth'
 import { useToastStore } from '@/providers/toast-provider'
 import { useUserProfileStore } from '@/providers/user-profile-store'
-import { ArrowRight, Mail } from 'lucide-react'
+import { ArrowRight, Lock, Mail } from 'lucide-react'
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useActionState, useEffect } from 'react'
 
@@ -53,12 +54,20 @@ export default function LoginForm() {
       </div>
 
       <div>
-        <label
-          htmlFor="password"
-          className="block text-xs font-semibold tracking-wider uppercase text-on-surface-variant mb-2"
-        >
-          Password
-        </label>
+        <div className="flex items-center justify-between mb-2">
+          <label
+            htmlFor="password"
+            className="block text-xs font-semibold tracking-wider uppercase text-on-surface-variant"
+          >
+            Password
+          </label>
+          <Link
+            href="/reset-password"
+            className="text-xs font-medium text-primary hover:opacity-90 transition-opacity"
+          >
+            Forgot password?
+          </Link>
+        </div>
         <div className="relative">
           <input
             id="password"
@@ -69,26 +78,11 @@ export default function LoginForm() {
             placeholder="*******"
             className="w-full bg-surface-container-low border border-outline-variant/20 rounded-lg px-4 py-3 pr-12 text-on-surface placeholder:text-on-surface-variant/40 focus:ring-2 focus:ring-primary-container focus:border-primary outline-none transition-all text-sm"
           />
-          <Mail
+          <Lock
             className="absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant/40 w-5 h-5"
             strokeWidth={1.75}
           />
         </div>
-      </div>
-
-      <div className="flex items-center">
-        <input
-          id="remember"
-          name="remember"
-          type="checkbox"
-          className="w-4 h-4 rounded border-outline-variant/40 bg-surface-container-low text-primary focus:ring-primary"
-        />
-        <label
-          htmlFor="remember"
-          className="ml-2 text-sm leading-5 text-on-surface-variant select-none"
-        >
-          Remember this device for 30 days
-        </label>
       </div>
 
       <button

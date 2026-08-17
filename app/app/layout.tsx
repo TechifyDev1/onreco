@@ -4,7 +4,6 @@ import Topbar from '@/components/dashboard/Topbar';
 import UserStoreInitializer from '@/providers/UserStoreInitializer';
 import { ApiError } from '@/services/ApiError';
 import UserService, { UserProfileState } from '@/services/UserService';
-import NextTopLoader from 'nextjs-toploader';
 import { redirect } from 'next/navigation';
 import { ReactNode } from 'react';
 
@@ -17,19 +16,6 @@ export default async function AppLayout({ children }: { children: ReactNode }) {
 
    return (
       <div className="min-h-screen bg-background text-on-surface">
-         <NextTopLoader
-            color="#2563EB"
-            initialPosition={0.08}
-            crawlSpeed={200}
-            height={3}
-            crawl={true}
-            showSpinner={false}
-            easing="ease"
-            speed={200}
-            shadow="0 0 10px #2563EB,0 0 5px #2563EB"
-            zIndex={1600}
-            showAtBottom={false}
-         />
          <UserStoreInitializer userProfile={userProfile} />
          <Sidebar />
          <div className="lg:pl-64 flex flex-col min-h-screen">

@@ -6,31 +6,31 @@ export default function Toast() {
    const TOAST_THEME = {
       success: {
          icon: CheckCircle2,
-         colorClasses: 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20',
-         barColor: 'bg-emirald-500',
+         colorClasses: 'text-emerald-600 bg-emerald-500/10 border-emerald-500/20',
+         barColor: 'bg-emerald-500',
          title: 'Success',
       },
       error: {
          icon: AlertCircle,
-         colorClasses: 'text-rose-400 bg-rose-500/10 border-rose-500/20',
+         colorClasses: 'text-rose-600 bg-rose-500/10 border-rose-500/20',
          barColor: 'bg-rose-500',
          title: 'Error',
       },
       warning: {
          icon: AlertTriangle,
-         colorClasses: 'text-amber-400 bg-amber-500/10 border-amber-500/20',
+         colorClasses: 'text-amber-600 bg-amber-500/10 border-amber-500/20',
          barColor: 'bg-amber-500',
          title: 'Warning',
       },
       info: {
          icon: Info,
-         colorClasses: 'text-sky-400 bg-sky-500/10 border-sky-500/20',
+         colorClasses: 'text-sky-600 bg-sky-500/10 border-sky-500/20',
          barColor: 'bg-sky-500',
          title: 'Information',
       },
       coming: {
          icon: Sparkles,
-         colorClasses: 'text-purple-400 bg-purple-500/10 border-purple-500/20',
+         colorClasses: 'text-purple-600 bg-purple-500/10 border-purple-500/20',
          barColor: 'bg-purple-500',
          title: 'Coming Soon!',
       },

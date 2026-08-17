@@ -21,17 +21,19 @@ import {
 
 export function RuleCard({
   rule,
+  accounts,
   onToggleActive,
   onEdit,
   onDelete,
 }: {
   rule: Rule;
+  accounts?: { id: string; label: string }[];
   onToggleActive: () => void;
   onEdit: () => void;
   onDelete: () => void;
 }) {
   const conditions: ConditionVM[] = buildConditions(rule);
-  const action: ActionVM = buildAction(rule);
+  const action: ActionVM = buildAction(rule, accounts);
 
   return (
     <article className="bg-glass rounded-xl p-5 md:p-6 glow-top border border-outline-variant/10">
