@@ -1,9 +1,9 @@
 import type { MetadataRoute } from "next";
-import { blogPosts } from "./blog/_data/posts";
+import { blogPosts } from "./(marketing)/blog/_data/posts";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL ?? "localhost:3000"}`;
-  
+
   const staticRoutes: MetadataRoute.Sitemap = [
     {
       url: baseUrl,
@@ -12,16 +12,64 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1,
     },
     {
-      url: `${baseUrl}/waitlist`,
+      url: `${baseUrl}/blog`,
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/demo`,
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.8,
     },
     {
-      url: `${baseUrl}/blog`,
+      url: `${baseUrl}/login`,
       lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.9,
+      changeFrequency: "monthly",
+      priority: 0.5,
+    },
+    {
+      url: `${baseUrl}/signup`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/eula`,
+      lastModified: new Date(),
+      changeFrequency: "yearly",
+      priority: 0.2,
+    },
+    {
+      url: `${baseUrl}/privacy`,
+      lastModified: new Date(),
+      changeFrequency: "yearly",
+      priority: 0.2,
+    },
+    {
+      url: `${baseUrl}/reset-password`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.3,
+    },
+    {
+      url: `${baseUrl}/reset-password/confirm`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.1,
+    },
+    {
+      url: `${baseUrl}/verify-email`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.3,
+    },
+    {
+      url: `${baseUrl}/verify-email/confirm`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.1,
     },
   ];
 
@@ -34,4 +82,3 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   return [...staticRoutes, ...blogRoutes];
 }
-

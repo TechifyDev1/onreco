@@ -1,12 +1,11 @@
 import { Play } from "lucide-react";
 import Link from "next/link";
-import ComingSoonButton from "@/components/shared/ComingSoonButton";
 
 export default function HeroSection() {
   const transactionSample = [
     {
       token: "USDC",
-      tokenBg: "bg-primary/20 text-primary",
+      tokenBg: "bg-[#2775CA]/20 text-[#2775CA]",
       label: "Invoice Payment",
       addr: "0x4a…9f2b",
       amount: "+ 5,000.00",
@@ -14,9 +13,9 @@ export default function HeroSection() {
     },
     {
       token: "USDT",
-      tokenBg: "bg-surface-variant text-on-surface",
+      tokenBg: "bg-[#26A17B]/20 text-[#26A17B]",
       label: "Contractor Payroll",
-      addr: "TRx8c…3d1a",
+      addr: "DcHv…wS7q",
       amount: "- 1,250.00",
       status: "Xero: Synced",
     },
@@ -26,7 +25,7 @@ export default function HeroSection() {
       className="px-4 md:px-8 py-24 max-w-container-max mx-auto relative h-screen flex justify-center items-center"
       style={{
         background:
-          "radial-gradient(ellipse 80% 50% at 50% 0%, rgba(180,197,255,0.10) 0%, transparent 70%)",
+          "radial-gradient(ellipse 80% 50% at 50% 0%, rgba(59,130,246,0.07) 0%, transparent 70%)",
       }}
     >
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
@@ -34,27 +33,27 @@ export default function HeroSection() {
         <div className="flex flex-col gap-6 z-10">
           <h1 className="text-[48px] leading-14 font-bold tracking-tight text-on-surface">
             Automate Stablecoin Accounting{" "}
-            <span className="text-primary">for QuickBooks and Xero.</span>
+            <span className="text-primary">for QuickBooks &amp; Xero.</span>
           </h1>
 
           <p className="text-[18px] leading-7 text-on-surface-variant max-w-lg">
-            Onreco monitors your wallets on Tron, Solana, and Base. Every USDT and USDC transaction is detected, categorized, matched to invoices, and synced to QuickBooks or Xero without manual entry.
+            Onreco monitors your wallets on Base and Solana. Every USDC and USDT transaction is detected, categorized, matched to invoices, and synced to QuickBooks or Xero without manual entry.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 pt-4">
             <Link
-              href="/waitlist"
+              href="/signup"
               className="btn-primary text-on-primary-container text-base font-medium px-6 py-3 rounded-lg hover:opacity-90 transition-opacity text-center cursor-pointer"
             >
-              Join the Waitlist
+              Get Started
             </Link>
-            <ComingSoonButton
-              message="Demo video will be available soon!"
+            <Link
+              href="/demo"
               className="flex items-center justify-center gap-2 bg-surface-variant border border-outline-variant/30 text-on-surface text-base font-medium px-6 py-3 rounded-lg hover:bg-surface-bright transition-colors text-center cursor-pointer"
             >
               <Play className="w-5 h-5 fill-current" />
               See How It Works
-            </ComingSoonButton>
+            </Link>
           </div>
         </div>
 

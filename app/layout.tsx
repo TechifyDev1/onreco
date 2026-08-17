@@ -1,145 +1,146 @@
-import type { Metadata } from "next";
-import { Inter, JetBrains_Mono } from "next/font/google";
-import "./globals.css";
-import { ReactNode } from "react";
-import Toast from "@/components/shared/Toast";
+import type { Metadata } from 'next'
+import { Space_Grotesk, JetBrains_Mono } from 'next/font/google'
+import './globals.css'
+import { ReactNode } from 'react'
+import Toast from '@/components/shared/Toast'
+import NextTopLoader from 'nextjs-toploader'
 
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
-  display: "swap",
-});
+const spaceGrotesk = Space_Grotesk({
+  subsets: ['latin'],
+  variable: '--font-grotesk',
+  display: 'swap',
+})
 
 const jetbrainsMono = JetBrains_Mono({
-  subsets: ["latin"],
-  variable: "--font-mono",
-  display: "swap",
-});
+  subsets: ['latin'],
+  variable: '--font-mono',
+  display: 'swap',
+})
 
 export const metadata: Metadata = {
-  metadataBase: new URL(`https://${process.env.VERCEL_PROJECT_PRODUCTION_URL ?? "localhost:3000"}`),
-  title: "Stablecoin Accounting for QuickBooks & Xero | Onreco",
+  metadataBase: new URL(
+    `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL ?? 'localhost:3000'}`
+  ),
+  title: 'Stablecoin Accounting for QuickBooks & Xero | Onreco',
   description:
-    "Automate stablecoin accounting with Onreco. Detect USDT and USDC transactions, reconcile payments, categorize activity, and sync directly to QuickBooks and Xero.",
+    'Automate stablecoin accounting with Onreco. Detect USDT and USDC transactions, reconcile payments, categorize activity, and sync directly to QuickBooks and Xero.',
   keywords: [
     // Core
-    "stablecoin accounting",
-    "stablecoin accounting software",
-    "stablecoin bookkeeping",
-    "stablecoin bookkeeping software",
-    "stablecoin reconciliation",
-    "stablecoin transaction tracking",
-    "stablecoin transaction monitoring",
+    'stablecoin accounting',
+    'stablecoin accounting software',
+    'stablecoin bookkeeping',
+    'stablecoin bookkeeping software',
+    'stablecoin reconciliation',
+    'stablecoin transaction tracking',
+    'stablecoin transaction monitoring',
 
     // QuickBooks
-    "QuickBooks crypto integration",
-    "QuickBooks stablecoin integration",
-    "QuickBooks USDT accounting",
-    "QuickBooks USDC accounting",
-    "QuickBooks crypto bookkeeping",
-    "QuickBooks stablecoin bookkeeping",
+    'QuickBooks crypto integration',
+    'QuickBooks stablecoin integration',
+    'QuickBooks USDT accounting',
+    'QuickBooks USDC accounting',
+    'QuickBooks crypto bookkeeping',
+    'QuickBooks stablecoin bookkeeping',
 
     // Xero
-    "Xero crypto integration",
-    "Xero stablecoin integration",
-    "Xero USDT accounting",
-    "Xero USDC accounting",
-    "Xero crypto bookkeeping",
-    "Xero stablecoin bookkeeping",
+    'Xero crypto integration',
+    'Xero stablecoin integration',
+    'Xero USDT accounting',
+    'Xero USDC accounting',
+    'Xero crypto bookkeeping',
+    'Xero stablecoin bookkeeping',
 
     // Stablecoins
-    "USDT accounting",
-    "USDT bookkeeping",
-    "USDT reconciliation",
-    "USDT transaction tracking",
-    "USDC accounting",
-    "USDC bookkeeping",
-    "USDC reconciliation",
-    "USDC transaction tracking",
+    'USDT accounting',
+    'USDT bookkeeping',
+    'USDT reconciliation',
+    'USDT transaction tracking',
+    'USDC accounting',
+    'USDC bookkeeping',
+    'USDC reconciliation',
+    'USDC transaction tracking',
 
     // Automation
-    "automated bookkeeping",
-    "bookkeeping automation",
-    "accounting automation",
-    "crypto bookkeeping automation",
-    "crypto accounting automation",
-    "automated journal entries",
-    "automatic journal entries",
-    "automated transaction categorization",
+    'automated bookkeeping',
+    'bookkeeping automation',
+    'accounting automation',
+    'crypto bookkeeping automation',
+    'crypto accounting automation',
+    'automated journal entries',
+    'automatic journal entries',
+    'automated transaction categorization',
 
     // Reconciliation
-    "crypto reconciliation",
-    "automated reconciliation",
-    "transaction reconciliation",
-    "wallet reconciliation",
-    "stablecoin payment reconciliation",
+    'crypto reconciliation',
+    'automated reconciliation',
+    'transaction reconciliation',
+    'wallet reconciliation',
+    'stablecoin payment reconciliation',
 
     // Wallet Monitoring
-    "wallet transaction monitoring",
-    "wallet transaction sync",
-    "wallet accounting automation",
-    "crypto wallet accounting",
-    "blockchain transaction accounting",
-    "on-chain transaction accounting",
+    'wallet transaction monitoring',
+    'wallet transaction sync',
+    'wallet accounting automation',
+    'crypto wallet accounting',
+    'blockchain transaction accounting',
+    'on-chain transaction accounting',
 
     // Payroll
-    "stablecoin payroll",
-    "crypto payroll accounting",
-    "stablecoin salary payments",
-    "contractor payments in USDT",
-    "contractor payments in USDC",
+    'stablecoin payroll',
+    'crypto payroll accounting',
+    'stablecoin salary payments',
+    'contractor payments in USDT',
+    'contractor payments in USDC',
 
     // Audience
-    "web3 accounting",
-    "web3 bookkeeping",
-    "accounting for web3 startups",
-    "crypto startup accounting",
-    "startup bookkeeping automation",
+    'web3 accounting',
+    'web3 bookkeeping',
+    'accounting for web3 startups',
+    'crypto startup accounting',
+    'startup bookkeeping automation',
 
     // Networks
-    "Tron stablecoin accounting",
-    "Tron USDT accounting",
-    "Solana stablecoin accounting",
-    "Solana USDC accounting",
-    "Base blockchain accounting",
-    "Base stablecoin accounting",
+    'Solana stablecoin accounting',
+    'Solana USDC accounting',
+    'Base blockchain accounting',
+    'Base stablecoin accounting',
 
     // Problems
-    "manual bookkeeping automation",
-    "month end reconciliation",
-    "invoice matching automation",
-    "transaction categorization software",
-    "accounting workflow automation",
+    'manual bookkeeping automation',
+    'month end reconciliation',
+    'invoice matching automation',
+    'transaction categorization software',
+    'accounting workflow automation',
   ],
   alternates: {
-    canonical: "/",
+    canonical: '/',
   },
   openGraph: {
-    title: "Stablecoin Accounting for QuickBooks & Xero | Onreco",
+    title: 'Stablecoin Accounting for QuickBooks & Xero | Onreco',
     description:
-      "Connect your wallet. Onreco detects USDT and USDC transactions on Tron, Solana, and Base, then syncs them directly to QuickBooks or Xero.",
-    type: "website",
-    url: `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL ?? "localhost:3000"}`,
-    siteName: "Onreco",
+      'Connect your wallet. Onreco detects USDT and USDC transactions on Base and Solana, then syncs them directly to QuickBooks or Xero.',
+    type: 'website',
+    url: `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL ?? 'localhost:3000'}`,
+    siteName: 'Onreco',
     images: [
       {
-        url: "/onreco_banner.jpg",
+        url: '/onreco_banner.jpg',
         width: 1200,
         height: 630,
-        alt: "Onreco - Stablecoin Accounting, Automated",
+        alt: 'Onreco - Stablecoin Accounting, Automated',
       },
     ],
-    locale: "en_US",
+    locale: 'en_US',
   },
   twitter: {
-    card: "summary_large_image",
-    title: "Onreco | Stablecoin Accounting, Automated",
+    card: 'summary_large_image',
+    title: 'Onreco | Stablecoin Accounting, Automated',
     description:
-      "Stop entering stablecoin transactions by hand. Onreco automates bookkeeping, reconciliation, and QuickBooks/Xero sync for USDT and USDC.",
-    images: ["/onreco_banner.jpg"],
+      'Stop entering stablecoin transactions by hand. Onreco automates bookkeeping, reconciliation, and QuickBooks/Xero sync for USDT and USDC.',
+    images: ['/onreco_banner.jpg'],
   },
   verification: {
-    google: "jjegQ2Hi3U5KA2rTXyOj3vbCCzWUGW-cTwBSKUaWz3c",
+    google: 'jjegQ2Hi3U5KA2rTXyOj3vbCCzWUGW-cTwBSKUaWz3c',
   },
   robots: {
     index: true,
@@ -147,26 +148,35 @@ export const metadata: Metadata = {
     googleBot: {
       index: true,
       follow: true,
-      "max-image-preview": "large",
-      "max-snippet": -1,
-      "max-video-preview": -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+      'max-video-preview': -1,
     },
   },
-};
+}
 
-export default function RootLayout({
-  children,
-}: {
-  children: ReactNode;
-}) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en" className="dark" data-scroll-behavior="smooth">
       <body
-        className={`${inter.variable} ${jetbrainsMono.variable} font-sans antialiased bg-background text-on-surface`}
+        className={`${spaceGrotesk.variable} ${jetbrainsMono.variable} font-sans antialiased bg-background text-on-surface`}
       >
         <Toast />
+        <NextTopLoader
+          color="#2563EB"
+          initialPosition={0.08}
+          crawlSpeed={200}
+          height={3}
+          crawl={true}
+          showSpinner={false}
+          easing="ease"
+          speed={200}
+          shadow="0 0 10px #2563EB,0 0 5px #2563EB"
+          zIndex={1600}
+          showAtBottom={false}
+        />
         {children}
       </body>
     </html>
-  );
+  )
 }

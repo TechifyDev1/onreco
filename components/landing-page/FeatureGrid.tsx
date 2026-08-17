@@ -4,7 +4,7 @@ const features = [
   {
     icon: Filter,
     title: "Automatic Transaction Detection",
-    body: "Onreco monitors your wallets on Tron, Solana, and Base and automatically identifies every USDT and USDC transaction. No manual imports. No missed entries.",
+    body: "Onreco monitors your wallets on Base and Solana and automatically identifies every USDT and USDC transaction. No manual imports. No missed entries.",
   },
   {
     icon: RefreshCw,

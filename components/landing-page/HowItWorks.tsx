@@ -11,7 +11,7 @@ const steps = [
     n: 2,
     icon: Radar,
     title: "Onreco Detects Transactions",
-    body: "Onreco monitors your wallets on Tron, Solana, and Base and automatically detects every incoming and outgoing USDT and USDC transaction.",
+    body: "Onreco monitors your wallets on Base and Solana and automatically detects every incoming and outgoing USDT and USDC transaction.",
   },
   {
     n: 3,
